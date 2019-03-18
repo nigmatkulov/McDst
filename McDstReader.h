@@ -28,16 +28,16 @@
 class McDstReader : public TObject {
 
  public:
-  /// Constructor that takes either uDst file or file that
-  /// contains a list of .root files
+  /// Constructor that takes either mcDst file or file that
+  /// contains a list of mcDst.root files
   McDstReader(const Char_t* inFileName);
   /// Destructor
   virtual ~McDstReader();
 
-  /// Return a pointer to uDst (return nullptr if no dst is found)
+  /// Return a pointer to mcDst (return nullptr if no dst is found)
   McDst *mcDst() { return mMcDst; }
   /// Return a pointer to Run info (return nullptr if not set)
-  /// Return pointer to the chain of .uDst.root files
+  /// Return pointer to the chain of .mcDst.root files
   TChain *chain() { return mChain; }
   /// Return pointer to the current TTree
   TTree *tree() { return mTree; }
@@ -65,14 +65,14 @@ class McDstReader : public TObject {
   /// Turn off streamers
   void streamerOff();
 
-  /// Create TClonesArray of UniGen classes and set them to uDst
+  /// Create TClonesArray of McDst classes and set them to uDst
   void createArrays();
-  /// Clear all TClonesArrays with uDst classes
+  /// Clear all TClonesArrays with McDst classes
   void clearArrays();
   /// Set adresses of mcArrays and their statuses (enable/disable) to chain
   void setBranchAddresses(TChain *chain);
 
-  /// Pointer to the input/output uDst structure
+  /// Pointer to the input/output McDst structure
   McDst *mMcDst;
   /// Pointer to the Run information
   McRun *mMcRun;

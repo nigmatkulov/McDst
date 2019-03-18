@@ -57,7 +57,7 @@ void McDstReader::setStatus(const Char_t *branchNameRegex, Int_t enable) {
   // Set branch status
   if(strncmp(branchNameRegex, "Mc", 2) == 0) {
     // Ignore first "Mc"
-    branchNameRegex += 1;
+    branchNameRegex += 2;
   }
 
   TRegexp re(branchNameRegex, 1);
