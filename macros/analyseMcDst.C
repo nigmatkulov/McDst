@@ -4,9 +4,6 @@
  * analyseMcDst.C is an example of reading McDst format.
  * One can use either uDst file or a list of mcDst files (inFile.lis or
  * inFile.list) as an input, and preform physics analysis
- *
- * \author Grigory Nigmatkulov
- * \date Dec 15, 2018
  */
 
 // C++ headers
