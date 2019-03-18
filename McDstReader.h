@@ -7,9 +7,6 @@
  * certain TClonesArrays that keep Event, Particle, etc...
  * One can also turn on or off certain branches using the
  * SetStatus method.
- *
- * \author Grigory Nigmatkulov; e-mail: nigmatkulov@gmail.com
- * \date May 28, 2018
  */
 
 #ifndef McDstReader_h

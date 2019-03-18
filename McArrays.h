@@ -4,8 +4,6 @@
  *
  *  The McArrays class holds array names, number of arrays and
  *  array default sizes
- *
- *  \author Grigory Nigmatkulov
  */
 
 #ifndef McArrays_h

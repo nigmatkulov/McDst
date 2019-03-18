@@ -4,8 +4,6 @@
  *
  * The class McDst holds the Monte Carlo data structure and access
  * methods to the branches
- *
- * \author Grigory Nigmatkulov
  */
 
 #ifndef McDst_h
@@ -35,7 +33,7 @@ class McDst {
   /// Reset pointers to the TClonesArrays to 0
   static void unset();
   /// Return pointer to the i-th TClonesArray
-  static TClonesArray* uArray(Int_t type) { return mcArrays[type]; }
+  static TClonesArray* mcArray(Int_t type) { return mcArrays[type]; }
   /// Return pointer to the McEvent information
   static McEvent* event() { return (McEvent*)mcArrays[McArrays::Event]->UncheckedAt(0); }
   /// Return pointer to the i-th particle

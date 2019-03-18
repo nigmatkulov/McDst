@@ -8,7 +8,6 @@
  * ftn13 contains the final snapshot and the freeze-out coordinates.
  * The freeze-out coordinates are used. The final snapshot coordinates
  * are discarded.
- *
  */
 
 // C++ headers
