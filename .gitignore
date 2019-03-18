@@ -1,0 +1,8 @@
+*.so
+*.o
+*.f13
+*.f14
+*.root
+urqmd2u
+UniGen_Dict.C
+UniGen_Dict_rdict.pcm
