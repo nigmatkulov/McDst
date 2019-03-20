@@ -113,6 +113,7 @@ class McParticle : public TObject {
   /// Return transverse momentum (pT)
   Double_t pt() const
   { return TMath::Sqrt( px()*px() + py()*py() ); }
+  Double_t phi() const      { return TMath::ATan2( py(), px() ); }
   /// Return mass (GeV/c^2)
   Double_t mass() const
   { return TDatabasePDG::Instance()->GetParticle( fPdg )->Mass(); }
