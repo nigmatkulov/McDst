@@ -27,7 +27,7 @@ McParticle::McParticle( const Int_t& index, const Int_t& pdg,
 			const Int_t& mate, const Int_t& decay,
 			Int_t child[2],
 			const Double_t& px, const Double_t& py,
-			const Double_t& pz, const Double_t& e,
+			const Double_t& pz, const Double_t& /* e */,
 			const Double_t& x, const Double_t& y,
 			const Double_t& z, const Double_t& t) : TObject() {
   // Standard constructor
@@ -233,7 +233,7 @@ const Bool_t McParticle::operator == (const McParticle& right) const {
 }
 
 //_________________
-void McParticle::print(Option_t* option) {
+void McParticle::print() const {
   // Print the data members to the standard output
   std::cout << "------------------------------------------------" << std::endl
 	    << "-I-                 Particle                 -I-" << std::endl
@@ -254,7 +254,7 @@ void McParticle::print(Option_t* option) {
 }
 
 //_________________
-void McParticle::Print(Option_t* option) {
+void McParticle::Print(Option_t* option) const {
   // Print the data members to the standard output
   std::cout << "------------------------------------------------" << std::endl
 	    << "-I-                 Particle                 -I-" << std::endl

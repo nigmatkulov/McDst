@@ -30,7 +30,9 @@ class McEvent : public TObject {
   /// Default destructor
   virtual ~McEvent();
   /// Print event information
-  void print(Option_t* option = "");
+  virtual void print() const;
+  /// Print event information
+  virtual void Print(Option_t* option = "") const;
 
   //
   // Getters

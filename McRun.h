@@ -31,9 +31,9 @@ class McRun : public TNamed {
   /// Default destructor
   virtual ~McRun();
   /// Print run info
-  void print(Option_t* option = "");
+  void print() const;
   /// Print run info
-  void Print(Option_t* option = "");
+  void Print(Option_t* option = "") const;
 
   /// Proton mass (GeV/c^2)
   static Double_t mProtMass;

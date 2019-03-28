@@ -51,9 +51,9 @@ class McParticle : public TObject {
   /// Comparison operator
   const Bool_t operator==(const McParticle& right) const;
   /// Print particle parameters
-  void print(Option_t* option = "");
+  virtual void print() const;
   /// Print particle parameters
-  void Print(Option_t* option = "");
+  virtual void Print(Option_t* option = "") const;
 
   //
   // Getters
@@ -245,12 +245,12 @@ class McParticle : public TObject {
   /// Set pz (GeV/c)
   void SetPz(const Double_t& pz)         { setPz(pz); }
   /// Set energy (GeV). IMPORTANT: This is a dummy method.
-  void setE(const Double_t& e)         { /* fE = (Float_t)e; */}
+  void setE(const Double_t& /* e */)         { /* fE = (Float_t)e; */}
   /// Set energy (GeV). IMPORTANT: This is a dummy method.
-  void SetE(const Double_t& e)         { /* fE = (Float_t)e; */}
+  void SetE(const Double_t& /* e */)         { /* fE = (Float_t)e; */}
   /// Set four-momentum (px,py,pz,E)
   void setMomentum(const Double_t& px, const Double_t& py,
-                   const Double_t& pz, const Double_t& e)
+                   const Double_t& pz, const Double_t& /* e */)
   { fPx = (Float_t)px; fPy = (Float_t)py; fPz = (Float_t)pz; /* fE = (Float_t)e; */ }
   /// Set four-momentum (px,py,pz,E)
   void SetMomentum(const Double_t& px, const Double_t& py,

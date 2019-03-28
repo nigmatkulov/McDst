@@ -43,7 +43,22 @@ McEvent::~McEvent() {
 }
 
 //_________________
-void McEvent::print(Option_t* option) {
+void McEvent::print() const {
+  // Print data members to the standard output
+  std::cout << "---------------------------------------------" << std::endl
+            << "-I-                 Event                 -I-" << std::endl
+            << "Event number               : " << fEventNr << std::endl
+            << "Impact parameter (fm)      : " << fB << std::endl
+            << "Reaction plane angle (rad) : " << fPhi << std::endl
+            << "Number of time steps       : " << fNes << std::endl
+            << "Time step number           : " << fStepNr << std::endl
+            << "Time of the time step (fm) : " << fStepT << std::endl
+            << "Comment                    :\n" << fComment << std::endl;
+  std::cout << "---------------------------------------------" << std::endl;
+}
+
+//_________________
+void McEvent::Print(Option_t* option) const {
   // Print data members to the standard output
   std::cout << "---------------------------------------------" << std::endl
             << "-I-                 Event                 -I-" << std::endl
@@ -59,9 +74,9 @@ void McEvent::print(Option_t* option) {
 
 //_________________
 void McEvent::setParameters(const Int_t& eventNr, const Double_t& b,
-			    const Double_t& phi, const Int_t& nes,
-			    const Int_t& stepNr, const Double_t& stepT,
-			    const char* comment) {
+												    const Double_t& phi, const Int_t& nes,
+												    const Int_t& stepNr, const Double_t& stepT,
+												    const char* comment) {
   // Set the event parameters
   fEventNr = (UInt_t)eventNr;
   fB = (Float_t)b;

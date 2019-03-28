@@ -66,7 +66,7 @@ McRun::~McRun() { // Destructor
 }
 
 //----------------
-void McRun::print(Option_t* option) {
+void McRun::print() const {
   // Print all data members to the standard output
   std::cout << "--------------------------------------------------" << std::endl
             << "-I-                 Run Header                 -I-" << std::endl
@@ -90,7 +90,7 @@ void McRun::print(Option_t* option) {
 }
 
 //_________________
-void McRun::Print(Option_t* option) {
+void McRun::Print(Option_t* option) const {
   // Print all data members to the standard output
   std::cout << "--------------------------------------------------" << std::endl
             << "-I-                 Run Header                 -I-" << std::endl
