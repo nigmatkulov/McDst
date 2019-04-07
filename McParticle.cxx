@@ -22,14 +22,14 @@ McParticle::McParticle() : TObject(),
 
 //_________________
 McParticle::McParticle( const Int_t& index, const Int_t& pdg,
-			const Int_t& status,
-			const Int_t& parent, const Int_t& parentDecay,
-			const Int_t& mate, const Int_t& decay,
-			Int_t child[2],
-			const Double_t& px, const Double_t& py,
-			const Double_t& pz, const Double_t& /* e */,
-			const Double_t& x, const Double_t& y,
-			const Double_t& z, const Double_t& t) : TObject() {
+                  			const Int_t& status,
+                  			const Int_t& parent, const Int_t& parentDecay,
+                  			const Int_t& mate, const Int_t& decay,
+                  			Int_t child[2],
+                  			const Double_t& px, const Double_t& py,
+                  			const Double_t& pz, const Double_t& /* e */,
+                  			const Double_t& x, const Double_t& y,
+                  			const Double_t& z, const Double_t& t) : TObject() {
   // Standard constructor
   fIndex = ( (index > std::numeric_limits<unsigned short>::max() ) ?
 	     std::numeric_limits<unsigned short>::max() : (UShort_t)index );
@@ -66,12 +66,12 @@ McParticle::McParticle( const Int_t& index, const Int_t& pdg,
 
 //_________________
 McParticle::McParticle( const Int_t& index, const Int_t& pdg,
-                      const Int_t& status,
-            		      const Int_t& parent, const Int_t& parentDecay,
-            		      const Int_t& mate, const Int_t& decay,
-                      Int_t child[2],
-            		      const TLorentzVector& mom,
-                      const TLorentzVector& pos) : TObject() {
+                        const Int_t& status,
+              		      const Int_t& parent, const Int_t& parentDecay,
+              		      const Int_t& mate, const Int_t& decay,
+                        Int_t child[2],
+              		      const TLorentzVector& mom,
+                        const TLorentzVector& pos) : TObject() {
   // Standard constructor
   fIndex = ( (index > std::numeric_limits<unsigned short>::max() ) ?
 	     std::numeric_limits<unsigned short>::max() : (UShort_t)index );
@@ -107,7 +107,7 @@ McParticle::McParticle( const Int_t& index, const Int_t& pdg,
 }
 
 //_________________
-McParticle::McParticle(const McParticle& right) {
+McParticle::McParticle(const McParticle& right) : TObject() {
   // Copy constructor
   fIndex = right.fIndex;
   fPdg = right.fPdg;
@@ -203,7 +203,7 @@ McParticle::~McParticle() { // Destructor
 }
 
 //_________________
-const Bool_t McParticle::operator == (const McParticle& right) const {
+Bool_t McParticle::operator==(const McParticle& right) const {
   // If equal operator
   return (
 	  fIndex       == right.fIndex &&
@@ -254,7 +254,7 @@ void McParticle::print() const {
 }
 
 //_________________
-void McParticle::Print(Option_t* option) const {
+void McParticle::Print( Option_t* option __attribute__((unused)) ) const {
   // Print the data members to the standard output
   std::cout << "------------------------------------------------" << std::endl
 	    << "-I-                 Particle                 -I-" << std::endl

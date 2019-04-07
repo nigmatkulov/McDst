@@ -27,12 +27,12 @@ class McParticle : public TObject {
   McParticle();
   /// Constructor that takes parameters
   McParticle(const Int_t& index, const Int_t& pdg, const Int_t& status,
-      	    const Int_t& parent, const Int_t& parentDecay,
-      	    const Int_t& mate, const Int_t& decay, Int_t child[2],
-      	    const Double_t& px, const Double_t& py, const Double_t& pz,
-            const Double_t& e,
-      	    const Double_t& x, const Double_t& y, const Double_t& z,
-            const Double_t& t);
+      	     const Int_t& parent, const Int_t& parentDecay,
+      	     const Int_t& mate, const Int_t& decay, Int_t child[2],
+      	     const Double_t& px, const Double_t& py, const Double_t& pz,
+             const Double_t& e,
+             const Double_t& x, const Double_t& y, const Double_t& z,
+             const Double_t& t);
   /// Another constructor with parameters
   McParticle(const Int_t& index, const Int_t& pdg, const Int_t& status,
       	    const Int_t& parent, const Int_t& parentDecay,
@@ -49,7 +49,7 @@ class McParticle : public TObject {
   /// Assignement operator
   const McParticle& operator=(const TParticle& right);
   /// Comparison operator
-  const Bool_t operator==(const McParticle& right) const;
+  Bool_t operator==(const McParticle& right) const;
   /// Print particle parameters
   virtual void print() const;
   /// Print particle parameters

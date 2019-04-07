@@ -58,7 +58,7 @@ void McEvent::print() const {
 }
 
 //_________________
-void McEvent::Print(Option_t* option) const {
+void McEvent::Print( Option_t* option __attribute__((unused)) ) const {
   // Print data members to the standard output
   std::cout << "---------------------------------------------" << std::endl
             << "-I-                 Event                 -I-" << std::endl

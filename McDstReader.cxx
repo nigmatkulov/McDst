@@ -175,7 +175,7 @@ void McDstReader::Init() {
 }
 
 //_________________
-Bool_t McDstReader::loadEntry(Long64_t iEntry) {
+Bool_t McDstReader::loadEntry(Long64_t iEntry __attribute__((unused))) {
   // Read McDst entry
   Int_t mStatusRead = true; // true - okay, false - nothing to read
 

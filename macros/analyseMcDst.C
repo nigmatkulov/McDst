@@ -26,11 +26,6 @@
 #include "../McParticle.h"
 #include "../McRun.h"
 
-// Load libraries (for ROOT_VERSTION_CODE >= 393215)
-#if ROOT_VERSION_CODE >= ROOT_VERSION(6,0,0)
-R__LOAD_LIBRARY(../libMcDst)
-#endif
-
 // inFile - is a name of name.uDst.root file or a name
 //          of a name.lis(t) files that contains a list of
 //          name1.uDst.root files
@@ -40,7 +35,9 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
 
   std::cout << "Hi! Lets do some physics, Master!" << std::endl;
 
-  #if ROOT_VERSION_CODE < ROOT_VERSION(6,0,0)
+	#if ROOT_VERSION_CODE >= ROOT_VERSION(6,0,0)
+		R__LOAD_LIBRARY(../libMcDst)
+	#else
     gSystem->Load("../libMcDst.so");
   #endif
 
@@ -76,7 +73,7 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
                         300, -0.5, 599.5);
   TH1D *hSqrtSnn = new TH1D( "hSqrtSnn","Collision energy;#sqrt{s_{NN}} (GeV);Entries",
                              100, 150., 250. );
-  
+
   // Track
   TH1D *hPz = new TH1D("hPz","p_{z} of particle;p_{z} (GeV/c);Entries",
                             402, -201., 201.);
@@ -107,7 +104,7 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
     Bool_t readEvent = myReader->loadEntry(iEvent);
     if( !readEvent ) {
       std::cout << "Something went wrong, Master! Nothing to analyze..."
-		<< std::endl;
+								<< std::endl;
       break;
     }
 
@@ -159,5 +156,5 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
   myReader->Finish();
 
   std::cout << "I'm done with analysis. We'll have a Nobel Prize, Master!"
-	    << std::endl;
+	    			<< std::endl;
 }

@@ -90,7 +90,7 @@ void McRun::print() const {
 }
 
 //_________________
-void McRun::Print(Option_t* option) const {
+void McRun::Print( Option_t* option __attribute__((unused)) ) const {
   // Print all data members to the standard output
   std::cout << "--------------------------------------------------" << std::endl
             << "-I-                 Run Header                 -I-" << std::endl

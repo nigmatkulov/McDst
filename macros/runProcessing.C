@@ -26,7 +26,7 @@
 void runProcessing(const Char_t *inFileName = "../data/filename.mcDst.root",
                    const Char_t *oFileName = "oTest.root") {
   // Next line is not needed if you are not running in a standalone mode
-  gSystem->Load("../libUniGen.so");
+  gSystem->Load("../libMcDst.so");
   TString str;
   str = ".x analyseMcDst.C+(\"";
   str += inFileName;
