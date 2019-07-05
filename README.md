@@ -46,14 +46,14 @@ Since ROOT 6 does not have CINT there is some extra flexibility on how to analyz
 Either from the terminal:
 
 ```
-root root runProcessing.C\(\"InputFile\",\"oFileName\"\)
+root runProcessing.C\(\"InputFile\",\"oFileName\"\)
 ```
 
 Or from the root session:
 
 ```
 [myterm]> root
-root [0].x root runProcessing.C("InputFile","oFileName")
+root [0].x runProcessing.C("InputFile","oFileName")
 ```
 
 ### Simple Processing

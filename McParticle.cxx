@@ -16,7 +16,7 @@ ClassImp(McParticle);
 McParticle::McParticle() : TObject(),
   fIndex(0), fPdg(0), fStatus(0), fParent(0), fParentDecay(0),
   fMate(0), fDecay(0), fChild{}, fPx(0), fPy(0), fPz(0),
-  fX(0), fY(0), fZ(0), fT(0) { // Default constructor
+  fX(0), fY(0), fZ(0), fT(0), fE(0) { // Default constructor
   /* empty */
 }
 
@@ -27,7 +27,7 @@ McParticle::McParticle( const Int_t& index, const Int_t& pdg,
                   			const Int_t& mate, const Int_t& decay,
                   			Int_t child[2],
                   			const Double_t& px, const Double_t& py,
-                  			const Double_t& pz, const Double_t& /* e */,
+                  			const Double_t& pz, const Double_t& e,
                   			const Double_t& x, const Double_t& y,
                   			const Double_t& z, const Double_t& t) : TObject() {
   // Standard constructor
@@ -58,6 +58,7 @@ McParticle::McParticle( const Int_t& index, const Int_t& pdg,
   fPx = (Float_t)px;
   fPy = (Float_t)py;
   fPz = (Float_t)pz;
+  fE  = (Float_t)e;
   fX  = (Float_t)x;
   fY  = (Float_t)y;
   fZ  = (Float_t)z;
@@ -100,10 +101,11 @@ McParticle::McParticle( const Int_t& index, const Int_t& pdg,
   fPx = (Float_t)mom.Px();
   fPy = (Float_t)mom.Py();
   fPz = (Float_t)mom.Pz();
-  fX = (Float_t)pos.X();
-  fY = (Float_t)pos.Y();
-  fZ = (Float_t)pos.Z();
-  fT = (Float_t)pos.T();
+  fE  = (Float_t)mom.E();
+  fX  = (Float_t)pos.X();
+  fY  = (Float_t)pos.Y();
+  fZ  = (Float_t)pos.Z();
+  fT  = (Float_t)pos.T();
 }
 
 //_________________
@@ -121,10 +123,11 @@ McParticle::McParticle(const McParticle& right) : TObject() {
   fPx = right.fPx;
   fPy = right.fPy;
   fPz = right.fPz;
-  fX = right.fX;
-  fY = right.fY;
-  fZ = right.fZ;
-  fT = right.fT;
+  fE  = right.fE;
+  fX  = right.fX;
+  fY  = right.fY;
+  fZ  = right.fZ;
+  fT  = right.fT;
 }
 
 //_________________
@@ -143,10 +146,11 @@ const McParticle& McParticle::operator=(const McParticle& right) {
     fPx = right.fPx;
     fPy = right.fPy;
     fPz = right.fPz;
-    fX = right.fX;
-    fY = right.fY;
-    fZ = right.fZ;
-    fT = right.fT;
+    fE  = right.fE;
+    fX  = right.fX;
+    fY  = right.fY;
+    fZ  = right.fZ;
+    fT  = right.fT;
   }
   return (*this);
 }
@@ -166,7 +170,7 @@ McParticle::McParticle(const TParticle &right) {
   fPx = right.Px();
   fPy = right.Py();
   fPz = right.Pz();
-  //fE = right.Energy();
+  fE = right.Energy();
   fX = right.Vx();
   fY = right.Vy();
   fZ = right.Vz();
@@ -188,7 +192,7 @@ const McParticle& McParticle::operator=(const TParticle &right) {
   fPx = right.Px();
   fPy = right.Py();
   fPz = right.Pz();
-  //fE = right.Energy();
+  fE = right.Energy();
   fX = right.Vx();
   fY = right.Vy();
   fZ = right.Vz();
@@ -247,7 +251,7 @@ void McParticle::print() const {
 	    << "First child index           : " << fChild[0] << std::endl
 	    << "Last child index            : " << fChild[1] << std::endl
 	    << "Momentum (px, py, pz) (GeV) : (" << fPx << ", " << fPy << ", " << fPz << ")" << std::endl
-            // << "Energy (GeV)                : " << fE << std::endl
+      << "Energy (GeV)                : " << fE << std::endl
 	    << "Position (x, y, z) (fm)     : (" << fX << ", " << fY << ", " << fZ << ")" << std::endl
 	    << "Creation time (fm)          : " << fT << std::endl
 	    << "------------------------------------------------" << std::endl;
@@ -268,7 +272,7 @@ void McParticle::Print( Option_t* option __attribute__((unused)) ) const {
 	    << "First child index           : " << fChild[0] << std::endl
 	    << "Last child index            : " << fChild[1] << std::endl
 	    << "Momentum (px, py, pz) (GeV) : (" << fPx << ", " << fPy << ", " << fPz << ")" << std::endl
-            // << "Energy (GeV)                : " << fE << std::endl
+      << "Energy (GeV)                : " << fE << std::endl
 	    << "Position (x, y, z) (fm)     : (" << fX << ", " << fY << ", " << fZ << ")" << std::endl
 	    << "Creation time (fm)          : " << fT << std::endl
 	    << "------------------------------------------------" << std::endl;

@@ -114,31 +114,42 @@ class McParticle : public TObject {
   Double_t pt() const
   { return TMath::Sqrt( px()*px() + py()*py() ); }
   Double_t phi() const      { return TMath::ATan2( py(), px() ); }
-  /// Return mass (GeV/c^2)
-  Double_t mass() const
+  /// Return mass according to the PDG code (GeV/c^2)
+  Double_t pdgMass() const
   { return TDatabasePDG::Instance()->GetParticle( fPdg )->Mass(); }
+  /// Return mass according to the PDG code (GeV/c^2)
+  Double_t PdgMass() const  { return pdgMass(); }
+  /// Return mass according to the generator
+  Double_t mass() const     { return momentum().M(); }
+  /// Return mass according to the generator
+  Double_t Mass() const     { return mass(); }
   /// Return charge
   Double_t charge() const
   { return TDatabasePDG::Instance()->GetParticle( fPdg )->Charge(); }
   /// Return energy of the particle (GeV)
-  Double_t energy() const
-  { return TMath::Sqrt( ptot()*ptot() + mass()*mass() ); }
+  Double_t energy() const   { return (Double_t)fE; }
   /// Return energy (GeV)
   Double_t e() const        { return energy(); }
   /// Return energy (GeV)
-  Double_t E() const        { return energy(); }
+  Double_t Energy() const   { return energy(); }
+  /// Calculate particle energy using PDG mass
+  Double_t pdgEnergy() const
+  { return TMath::Sqrt( ptot()*ptot() + pdgMass()*pdgMass() ); }
+  /// Return energy (GeV)
+  Double_t pdgE() const     { return pdgEnergy(); }
+  /// Calculate particle enrgy using PDG mass
+  Double_t PdgEnergy() const{ return pdgEnergy(); }
   /// Return pseudorapidity
   Double_t eta() const      { return momentum().Eta(); }
   /// Return pseudorapidity
   Double_t pseudoRapidity() const { return momentum().Eta(); }
   /// Return four-momentum (px,py,pz,E)
   TLorentzVector momentum() const
-  { return TLorentzVector( fPx, fPy, fPz, e() ); }
+  { return TLorentzVector( fPx, fPy, fPz, fE ); }
   /// Return four-momentum (px,py,pz,E)
   TLorentzVector GetMomentum() const { return momentum(); }
   /// Set four-momentum to the mom vector
-  void momentum(TLorentzVector& mom) const
-  { mom.SetXYZM( fPx, fPy, fPz, mass() ); }
+  void momentum(TLorentzVector& mom) const { mom.SetPxPyPzE( fPx, fPy, fPz, fE ); }
   /// Set four-momentum to the mom vector
   void Momentum(TLorentzVector& mom) const { momentum(mom); }
   /// Return x position (fm)
@@ -244,21 +255,21 @@ class McParticle : public TObject {
   void setPz(const Double_t& pz)         { fPz = (Float_t)pz; }
   /// Set pz (GeV/c)
   void SetPz(const Double_t& pz)         { setPz(pz); }
-  /// Set energy (GeV). IMPORTANT: This is a dummy method.
-  void setE(const Double_t& /* e */)         { /* fE = (Float_t)e; */}
-  /// Set energy (GeV). IMPORTANT: This is a dummy method.
-  void SetE(const Double_t& /* e */)         { /* fE = (Float_t)e; */}
+  /// Set energy (GeV)
+  void setE(const Double_t& e)           { fE = (Float_t)e; }
+  /// Set energy (GeV)
+  void SetE(const Double_t& e)           { setE(e); }
   /// Set four-momentum (px,py,pz,E)
   void setMomentum(const Double_t& px, const Double_t& py,
-                   const Double_t& pz, const Double_t& /* e */)
-  { fPx = (Float_t)px; fPy = (Float_t)py; fPz = (Float_t)pz; /* fE = (Float_t)e; */ }
+                   const Double_t& pz, const Double_t& e)
+  { fPx = (Float_t)px; fPy = (Float_t)py; fPz = (Float_t)pz; fE = (Float_t)e; }
   /// Set four-momentum (px,py,pz,E)
   void SetMomentum(const Double_t& px, const Double_t& py,
                    const Double_t& pz, const Double_t& e)
   { setMomentum(px, py, pz, e); }
   /// Set four-momentum (TLorentzVector)
   void setMomentum(const TLorentzVector& mom)
-  { fPx=(Float_t)mom.Px(); fPy=(Float_t)mom.Py(); fPz=(Float_t)mom.Pz(); /* fE=(Float_t)mom.E(); */ }
+  { fPx=(Float_t)mom.Px(); fPy=(Float_t)mom.Py(); fPz=(Float_t)mom.Pz(); fE=(Float_t)mom.E(); }
   /// Set four-momentum (TLorentzVector)
   void SetMomentum(const TLorentzVector& mom) { setMomentum(mom); }
   /// Set x coordinate (fm)
@@ -322,9 +333,11 @@ class McParticle : public TObject {
   Float_t fZ;
   /// t (fm/c)
   Float_t fT;
+  /// Energy (GeV)
+  Float_t fE;
 
 #ifdef __ROOT__
-  ClassDef(McParticle, 1);
+  ClassDef(McParticle, 2);
 #endif
 };
 

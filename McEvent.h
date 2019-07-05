@@ -68,6 +68,14 @@ class McEvent : public TObject {
   Double_t GetStepT() const          { return stepT(); }
   /// Return time of the step (stamp)
   Double_t stepTime() const          { return stepT(); }
+  /// Return number of participants
+  Int_t npart() const                { return (Int_t)fNpart; }
+  /// Return number of participants
+  Int_t GetNpart() const             { return npart(); }
+  /// Return number of binary collisions
+  Int_t ncoll() const                { return (Int_t)fNcoll; }
+  /// Return number of binary collisions
+  Int_t GetNcoll() const             { return ncoll(); }
   /// Return comment
   void comment(TString& comment) const { comment = fComment; }
   /// Return comment
@@ -124,6 +132,14 @@ class McEvent : public TObject {
   void setComment(const char* comment)   { fComment = comment; }
   /// Set comment
   void SetComment(const char* comment)   { setComment( comment); }
+  /// Set number of participants
+  void setNpart(const Int_t& npart)      { fNpart = (Short_t)npart; }
+  /// Set number of participants
+  void SetNpart(const Int_t& npart)      { setNpart(npart); }
+  /// Set number of binary collisions
+  void setNcoll(const Int_t& ncoll)      { fNcoll = (Short_t)ncoll; }
+  /// Set number of binary collisions
+  void SetNcoll(const Int_t& ncoll)      { setNcoll(ncoll); }
 
  private:
   /// Event number
@@ -140,9 +156,13 @@ class McEvent : public TObject {
   Float_t fStepT;
   /// Generator-specific information
   TString fComment;
+  /// Number of participants (-1: not set)
+  Short_t fNpart;
+  /// Number of binary collisions (-1: not set)
+  Short_t fNcoll;
 
 #ifdef __ROOT__
-  ClassDef(McEvent, 1);
+  ClassDef(McEvent, 2);
 #endif
 };
 

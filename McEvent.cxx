@@ -18,8 +18,10 @@ ClassImp(McEvent);
 #endif
 
 //_________________
-McEvent::McEvent() : TObject(), fEventNr(0), fB(0), fPhi(0),
-		     fNes(0), fStepNr(0), fStepT(0), fComment("") {
+McEvent::McEvent() : TObject(),
+	fEventNr(0), fB(0), fPhi(0),
+	fNes(0), fStepNr(0), fStepT(0), fComment(""),
+	fNpart(-1), fNcoll(-1) {
   // Default constructor
   /* empty */
 }
@@ -34,6 +36,8 @@ McEvent::McEvent(const McEvent& right) : TObject() {
   fStepNr   = right.fStepNr;
   fStepT    = right.fStepT;
   fComment  = right.fComment;
+	fNpart    = right.fNpart;
+	fNcoll    = right.fNcoll;
 }
 
 //_________________
@@ -53,8 +57,10 @@ void McEvent::print() const {
             << "Number of time steps       : " << fNes << std::endl
             << "Time step number           : " << fStepNr << std::endl
             << "Time of the time step (fm) : " << fStepT << std::endl
-            << "Comment                    :\n" << fComment << std::endl;
-  std::cout << "---------------------------------------------" << std::endl;
+            << "Comment                    : " << fComment << std::endl
+						<< "Number of participants     : \n" << fNpart << std::endl
+						<< "Number of bin. collisions  : " << fNcoll << std::endl
+  					<< "---------------------------------------------" << std::endl;
 }
 
 //_________________
@@ -68,8 +74,10 @@ void McEvent::Print( Option_t* option __attribute__((unused)) ) const {
             << "Number of time steps       : " << fNes << std::endl
             << "Time step number           : " << fStepNr << std::endl
             << "Time of the time step (fm) : " << fStepT << std::endl
-            << "Comment                    :\n" << fComment << std::endl;
-  std::cout << "---------------------------------------------" << std::endl;
+            << "Comment                    :\n" << fComment << std::endl
+						<< "Number of participants     : " << fNpart << std::endl
+						<< "Number of bin. collisions  : " << fNcoll << std::endl
+  					<< "---------------------------------------------" << std::endl;
 }
 
 //_________________

@@ -102,10 +102,16 @@ int main(int argc, char *argv[]) {
   char c;
   int nevents;
   string dust;
-  bool debug = false;
 
+  // Print debug information during the conversion
+  bool debug = false;
+  // Switcher that excludes elastic collisions
+  bool excludeElastic = true;
+
+  // McRun initialization
   McRun *run = nullptr;
 
+  bool isElastic;
   string version, comment;
   int filetype, eos, aproj, zproj, atarg, ztarg, nr;
   double beta, b, bmin, bmax, sigma, elab, plab, sqrts, time, dtime;
@@ -117,14 +123,15 @@ int main(int argc, char *argv[]) {
     exit(0);
   }
 
+  // Read input file from the command line
   inpfile = argv[1];
+  // Read number of events to convert from the command line
   nevents = atoi(argv[2]);
 
   int nout=0;
 
   // Check that filename contains .f13 or .f14
   TString oFileName( newName( argv[1] ) );
-
 
   // Try to open file
   in.open(inpfile);
@@ -161,6 +168,7 @@ int main(int argc, char *argv[]) {
     if ((n%bunch)==0) std::cout << "event "  << setw(5) << n << std::endl;
     string line;
 
+    // Read event information
     in >> dust >> dust >> version >> dust >> dust;
     in >> dust >> filetype >> dust >> dust >> dust >> aproj >> zproj;
     in >> dust >> dust >> dust >> atarg >> ztarg;
@@ -183,24 +191,19 @@ int main(int argc, char *argv[]) {
     }
     in.ignore(777,'\n');
 
-    //ev->Clear();
+    // Clear all arrays
     for (unsigned int i = 0; i < McArrays::NAllMcArrays; i++) {
       // Create arrayss
       arrays[i]->Clear();
     }
 
-    // Let the new McEvent appear!
-    McEvent *ev = new ( ( *(arrays[McArrays::Event]) )[arrays[McArrays::Event]->GetEntries()]) McEvent();
-
-    ev->setEventNr(nr);
-    ev->setB(b);
-    ev->setPhi(0);
-    ev->setNes((int) (time/dtime));
+    // Increment number of processed events
     events_processed++;
 
     int step_nr=0;
     char pee;
-    while (1) { // loop over time slices
+    // Loop over time slices
+    while (1) {
       int mult;
       double step_time;
       pee=in.peek();
@@ -208,62 +211,99 @@ int main(int argc, char *argv[]) {
       if (pee==EOF) break;
       in >> mult >> step_time;
 
+      // Check if collision is elastic
+      isElastic = false;
+      if ( (aproj+atarg) == mult ) {
+        isElastic = true;
+      }
+
       if ( debug ) {
-	std::cout << "Number of particles in event: " << mult << std::endl;
+	      std::cout << "Number of particles in event: " << mult << std::endl;
       }
 
       in.ignore(777,'\n'); // ignore the rest of the line
       getline(in,line);
-      ev->setComment(line.data());
 
+      // Loop over generated particles
       for (int i=0;  i<mult; i++) {
-	if ( debug ) {
-	  std::cout << "Working on particle i: " << i << std::endl;
-	}
-	double t, x, y, z, e, px, py, pz;
-	int ityp, iso3, ichg, status, parent, parent_decay, mate;
-	int decay, child[2];
-	in >> t >> x >> y >> z;
-	in >> e >> px >> py >> pz >> dust;
-	in >> ityp >> iso3 >> ichg >> mate >> dust >> dust;
-	if ( debug ) {
-	  std::cout << Form( " t: %6.3f \tx: %6.3f \ty: %6.3f \tz: %6.3f \tpx: %6.3f \tpy: %6.3f \tpz: %6.3f\n",
-			     t, x, y, z, px, py, pz );
-	}
-	if (filetype==13) { // freeze-out coordinates
-	  in >> t >> x >> y >> z;
-	  in >> e >> px >> py >> pz;
-	  if ( debug ) {
-	    std::cout << Form( " t: %6.3f \tx: %6.3f \ty: %6.3f \tz: %6.3f \tpx: %6.3f \tpy: %6.3f \tpz: %6.3f\n",
-			       t, x, y, z, px, py, pz );
-	  }
-	}
+      	if ( debug ) {
+      	  std::cout << "Working on particle i: " << i << std::endl;
+      	}
+      	double t, x, y, z, e, px, py, pz;
+      	int ityp, iso3, ichg, status, parent, parent_decay, mate;
+      	int decay, child[2];
 
-	if (in.fail()) bomb("while reading tracks");
-	status = parent_decay = decay = child[0] = child[1] = 0;
-	new ( ( *(arrays[McArrays::Particle]) )[arrays[McArrays::Particle]->GetEntries()])
-	  McParticle( i, trapco(ityp, ichg), status, parent,
-		      parent_decay, mate-1, decay, child,
-		      px, py, pz, e, x, y, z, t );
-	if( debug ) {
-	  int iPart = arrays[McArrays::Particle]->GetEntries();
-	  McParticle *particle = (McParticle*)arrays[McArrays::Particle]->At(iPart-1);
-	  if ( !particle ) {
-	    std::cout << "Particle does not exist!" << std::endl;
-	    break;
-	  }
-	  std::cout << Form( " t: %6.3f \tx: %6.3f \ty: %6.3f \tz: %6.3f \tpx: %6.3f \tpy: %6.3f \tpz: %6.3f\n",
-			     particle->t(), particle->x(),
-			     particle->y(), particle->z(),
-			     particle->px(), particle->py(),
-			     particle->pz() );
-	}
+        // Read particl information
+      	in >> t >> x >> y >> z;
+      	in >> e >> px >> py >> pz >> dust;
+      	in >> ityp >> iso3 >> ichg >> mate >> dust >> dust;
+
+        // Print particle information
+      	if ( debug ) {
+      	  std::cout << Form( " t: %6.3f \tx: %6.3f \ty: %6.3f \tz: %6.3f \tpx: %6.3f \tpy: %6.3f \tpz: %6.3f\n",
+      			                 t, x, y, z, px, py, pz );
+      	}
+
+        // Read freeze-out information
+      	if (filetype==13) {
+      	  in >> t >> x >> y >> z;
+      	  in >> e >> px >> py >> pz;
+
+          // Print freeze-out information
+      	  if ( debug ) {
+      	    std::cout << Form( " t: %6.3f \tx: %6.3f \ty: %6.3f \tz: %6.3f \tpx: %6.3f \tpy: %6.3f \tpz: %6.3f\n",
+      			                   t, x, y, z, px, py, pz );
+      	  }
+      	} // if (filetype==13)
+
+      	if (in.fail()) bomb("while reading tracks");
+
+        // Do not fill McParticles for elastic collisions (if skip)
+        if (isElastic && excludeElastic) continue;
+
+      	status = parent_decay = decay = child[0] = child[1] = 0;
+        // Add new particle to the event
+      	new ( ( *(arrays[McArrays::Particle]) )[arrays[McArrays::Particle]->GetEntries()])
+      	  McParticle( i, trapco(ityp, ichg), status, parent,
+            		      parent_decay, mate-1, decay, child,
+            		      px, py, pz, e, x, y, z, t );
+
+        // Print particle information stored in McParticle
+      	if (debug) {
+      	  int iPart = arrays[McArrays::Particle]->GetEntries();
+      	  McParticle *particle = (McParticle*)arrays[McArrays::Particle]->At(iPart-1);
+      	  if ( !particle ) {
+      	    std::cout << "Particle does not exist!" << std::endl;
+      	    break;
+      	  }
+      	  std::cout << Form( " t: %6.3f \tx: %6.3f \ty: %6.3f \tz: %6.3f \tpx: %6.3f \tpy: %6.3f \tpz: %6.3f\n",
+                  			     particle->t(), particle->x(),
+                  			     particle->y(), particle->z(),
+                  			     particle->px(), particle->py(),
+                  			     particle->pz() );
+      	} // if (debug) {
       } // for (int i=0;  i<mult; i++)
 
       do in.get(c); while (c!='\n');
-      ev->setStepNr(step_nr++);
-      ev->setStepT(step_time);
-      nout += tr->Fill();
+
+      // Create an instance of the McEvent and add it to the DST
+      // only when the event is not elastic and those are not required
+      // to be skipped
+      if ( !(isElastic && excludeElastic) ) {
+        // Add new McEvent
+        McEvent *ev = new ( ( *(arrays[McArrays::Event]) )[arrays[McArrays::Event]->GetEntries()]) McEvent();
+
+        ev->setEventNr(nr);
+        ev->setB(b);
+        ev->setPhi(0);
+        ev->setNes((int) (time/dtime));
+        ev->setComment(line.data());
+        ev->setStepNr(step_nr++);
+        ev->setStepT(step_time);
+
+        // Fill DST with event and track information
+        nout += tr->Fill();
+      }
     } // while (1) { // Loop over time slices
 
     if (pee==EOF) break;
@@ -282,9 +322,9 @@ int main(int argc, char *argv[]) {
   double pproj = gamma*(+pcm-beta*ecm);
   double ptarg = gamma*(-pcm-beta*ecm);
   run = new McRun( generator.data(), comment.data(),
-		   aproj, zproj, pproj,
-		   atarg, ztarg, ptarg,
-		   bmin, bmax, -1, 0, 0, sigma, events_processed);
+            		   aproj, zproj, pproj,
+            		   atarg, ztarg, ptarg,
+            		   bmin, bmax, -1, 0, 0, sigma, events_processed);
   run->Write();
   fi->Write();
   fi->Close();
