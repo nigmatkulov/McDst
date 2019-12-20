@@ -45,5 +45,8 @@ converters_debug: CXXFLAGS += -O0 -g
 converters_debug: converters
 converters_optdebug: CXXFLAGS += -O2 -g
 converters_optdebug: converters
-converters: urqmd2mc.cpp
+converters: urqmd2mc pythia8
+urqmd2mc: urqmd2mc.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCS) $^ -o $(patsubst %.cpp,%,$<) -L. -l$(patsubst lib%.so,%,$(MCDST)) $(LIBS)
+pythia8: pythia8gen.cpp
+	$(CXX) $(CXXFLAGS) -I$(INCS) $(shell pythia8-config --cflags) $^ -o $(patsubst %.cpp,%,$<) -L. -l$(patsubst lib%.so,%,$(MCDST)) $(shell pythia8-config --libs) $(LIBS)
