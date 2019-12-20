@@ -67,7 +67,7 @@ struct option longopts[] =
   { .name = "rnd", .has_arg = 1, .flag = 0, .val = 'r' },
   { .name = "compression-level", .has_arg = 1, .flag = 0, .val = 0xFF01 },
   { .name = "compression-algo", .has_arg = 1, .flag = 0, .val = 0xFF02 },
-  { .name = "only-final", .has_arg = 0, .flag = 0, .val = 0xFF03 },
+  { .name = "all-particles", .has_arg = 0, .flag = 0, .val = 0xFF03 },
   { .name = "xmldoc-dir", .has_arg = 1, .flag = 0, .val = 0xFF04 },
   { 0, 0, 0, 0 }
 };
