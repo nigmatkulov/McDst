@@ -55,6 +55,7 @@
 #define PROGNAME "pythia8gen"
 #define VERSION "1.0"
 #define OFILE_DEFAULT "out_pythia8.root"
+#define XMLDOC_DEFAULT "../share/Pythia8/xmldoc" /* see Pythia8/Pythia.h */
 
 // Options for getopt.
 struct option longopts[] =
@@ -67,6 +68,7 @@ struct option longopts[] =
   { .name = "compression-level", .has_arg = 1, .flag = 0, .val = 0xFF01 },
   { .name = "compression-algo", .has_arg = 1, .flag = 0, .val = 0xFF02 },
   { .name = "only-final", .has_arg = 0, .flag = 0, .val = 0xFF03 },
+  { .name = "xmldoc-dir", .has_arg = 1, .flag = 0, .val = 0xFF04 },
   { 0, 0, 0, 0 }
 };
 
@@ -87,7 +89,8 @@ help_me()
                                     Valid levels are from 1 (low) 9 (high).\n\
     --compression-algo <ALGORITHM>  Set compression algorithm to <ALGORITHM>\n\
                                     Possible values are zlib, lz4 (only for ROOT > 6), lzma\n\
-    --all-particles                 Save decayed/branched/fragmented/... particles too\n";
+    --all-particles                 Save decayed/branched/fragmented/... particles too\n\
+    --xmldoc-dir <DIR>              Path to the xmldoc directory (default: " XMLDOC_DEFAULT "\n";
 
   std::cout << hstr;
   exit(EXIT_SUCCESS);
@@ -116,6 +119,8 @@ main(int argc, char *argv[])
   char *rnd = 0;
   char *ifile = 0;
   char *ofile = OFILE_DEFAULT; // FIXME: ISO C++ forbids converting a string constant to ‘char*’
+  char *xmldoc = XMLDOC_DEFAULT; // FIXME: ISO C++ forbids converting a string constant to ‘char*’
+  std::vector<std::string> pills;
   TFile *outFile = 0;
   TTree *tree = 0;
 #if defined(ROOT_VERSION_CODE) && defined(ROOT_VERSION)
@@ -131,7 +136,6 @@ main(int argc, char *argv[])
   int treeAutoSave = -(4 << 20); /* Do auto save each 4 MB == 4^20 Bytes.
                                     Minus stands for bytes limit rather than number of entries. */
   TClonesArray *mcArrays[McArrays::NAllMcArrays];
-  Pythia8::Pythia pythia("../share/Pythia8/xmldoc" /* see Pythia8/Pythia.h */, false);
   // Precalculated hashes.
   const uint32_t lzma = 2053988608; // hash4("lzma")
   const uint32_t zlib = 1818845696; // hash4("zlib")
@@ -149,11 +153,10 @@ main(int argc, char *argv[])
       help_me();
       break;
     case 's':
-      pythia.readString(optarg);
+      pills.push_back(optarg);
       break;
     case 'i':
       ifile = optarg;
-      pythia.readFile(ifile);
       break;
     case 'o':
       ofile = optarg;
@@ -188,12 +191,33 @@ main(int argc, char *argv[])
     case 0xFF03:
       onlyFinal = 0;
       break;
+    case 0xFF04:
+      xmldoc = optarg;
+      break;
     default:
       ERR(1, "Wrong option: %c", (char)opt);
     }
   }
 
-  // Initialize random seed.
+  // Initialize Pythia 8.
+  Pythia8::Pythia pythia(xmldoc, false);
+  /*
+    One pill makes you larger
+    And one pill makes you small
+    And the ones that mother gives you
+    Don't do anything at all
+    Go ask Alice
+    When she's ten feet tall
+
+    Choose pills with a caution!
+    But not forget what Dormouse said.
+    Feed your head!
+  */
+  for (std::vector<std::string>::iterator pill = pills.begin(); pill != pills.end(); ++pill)
+  {
+    pythia.readString(pill->c_str());
+  }
+  pythia.readFile(ifile);
   pythia.readString("Random:setSeed = on");
   std::string sseed = "Random:seed = ";
   if (rnd)
