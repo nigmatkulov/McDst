@@ -292,6 +292,10 @@ main(int argc, char *argv[])
       int mate = 0;
       int child[2] = {0};
 
+      // Skip beam particles.
+      if (abs(status) < 19)
+        continue;
+
       // Optionally do skip not final particles.
       if (status < 0)
       {
