@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2019 Nikita (arei) Ermakov <coffe92@gmail.com>
+  Copyright (c) 2019-2020 Nikita (arei) Ermakov <coffe92@gmail.com>
   SPDX-License-Identifier: MIT
 */
 
