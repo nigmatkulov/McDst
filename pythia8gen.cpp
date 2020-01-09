@@ -29,6 +29,7 @@
 #include "TMath.h"
 #include "TClonesArray.h"
 #include "Compression.h"
+#include "TLorentzVector.h"
 
 // McDst headers.
 #include "McRun.h"
@@ -36,6 +37,7 @@
 #include "McParticle.h"
 #include "McPIDConverter.h"
 #include "McArrays.h"
+#include "McDstCut.h"
 
 // Pythia 8 headers.
 #include "Pythia8/Pythia.h"
@@ -69,6 +71,11 @@ struct option longopts[] =
   { .name = "compression-algo", .has_arg = 1, .flag = 0, .val = 0xFF02 },
   { .name = "all-particles", .has_arg = 0, .flag = 0, .val = 0xFF03 },
   { .name = "xmldoc-dir", .has_arg = 1, .flag = 0, .val = 0xFF04 },
+  { .name = "pt-low", .has_arg = 1, .flag = 0, .val = 0xFF05 },
+  { .name = "pt-high", .has_arg = 1, .flag = 0, .val = 0xFF06 },
+  { .name = "eta-low", .has_arg = 1, .flag = 0, .val = 0xFF07 },
+  { .name = "eta-high", .has_arg = 1, .flag = 0, .val = 0xFF08 },
+  { .name = "exclude-pdg", .has_arg = 1, .flag = 0, .val = 0xFF09 },
   { 0, 0, 0, 0 }
 };
 
@@ -90,7 +97,13 @@ help_me()
     --compression-algo <ALGORITHM>  Set compression algorithm to <ALGORITHM>\n\
                                     Possible values are zlib, lz4 (only for ROOT > 6), lzma\n\
     --all-particles                 Save decayed/branched/fragmented/... particles too\n\
-    --xmldoc-dir <DIR>              Path to the xmldoc directory (default: " XMLDOC_DEFAULT "\n";
+    --xmldoc-dir <DIR>              Path to the xmldoc directory (default: " XMLDOC_DEFAULT "\n\
+    --pt-low <low pt cut>            Low edge of the p_{t} cut.\n\
+    --pt-high <high pt cut>          High edge of the p_{t} cut.\n\
+    --eta-low <low eta cut>         Low edge of the pseudorapidity cut.\n\
+    --eta-high <high eta cut>       High edge of the pseudorapidity cut.\n\
+    --exclude-pdg <pdg code>        Exclude <pdg code>. Could be defined multiple times\n\
+                                    to exclude multiple particles.\n";
 
   std::cout << hstr;
   exit(EXIT_SUCCESS);
@@ -140,6 +153,8 @@ main(int argc, char *argv[])
   const uint32_t lzma = 2053988608; // hash4("lzma")
   const uint32_t zlib = 1818845696; // hash4("zlib")
   const uint32_t lz4 = 8008704; // hash4("lz4")
+  // Preselection cut class.
+  McDstCut cut;
 
   // Parse command line arguments.
   if (argc <= 1)
@@ -193,6 +208,21 @@ main(int argc, char *argv[])
       break;
     case 0xFF04:
       xmldoc = optarg;
+      break;
+    case 0xFF05:
+      cut.setPtLow(std::stoi(optarg));
+      break;
+    case 0xFF06:
+      cut.setPtHigh(std::stoi(optarg));
+      break;
+    case 0xFF07:
+      cut.setEtaLow(std::stoi(optarg));
+      break;
+    case 0xFF08:
+      cut.setEtaHigh(std::stoi(optarg));
+      break;
+    case 0xFF09:
+      cut.excludePdg(std::stoi(optarg));
       break;
     default:
       ERR(1, "Wrong option: %c", (char)opt);
@@ -394,10 +424,18 @@ main(int argc, char *argv[])
       float py = ev[itrk].py();
       float pz = ev[itrk].pz();
       float e = ev[itrk].e();
+      TLorentzVector v(ev[itrk].px(), ev[itrk].py(), ev[itrk].pz(), ev[itrk].e());
       float x = ev[itrk].xProd()*1e-12; // In Pythia 8 these values in mm (mm/c).
       float y = ev[itrk].yProd()*1e-12; // Convert mm (and mm/c) to fm (fm/c).
       float z = ev[itrk].zProd()*1e-12; // It should be zero for primary particles - i.e. not from
       float t = ev[itrk].tProd()*1e-12; // decayed particle.
+
+      // Check particle cut.
+      if (!cut.isGoodParticle(v.Pt(), v.PseudoRapidity(), pdg))
+      {
+        continue;
+      }
+
       // Add new track. FIXME: check nullptr.
       TClonesArray *mcTrkCol = mcArrays[McArrays::Particle];
       new ((*mcTrkCol)[mcTrkCol->GetEntries()]) McParticle(index, pdg, status, parent,
