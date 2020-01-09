@@ -7,10 +7,11 @@
 
 McDstCut::McDstCut()
 {
-  etaCut[0] = -999.;
-  etaCut[1] = 999.;
-  ptCut[0] = -999.;
-  ptCut[1] = -999.;
+  // We are using INFINITY IEEE 754.
+  etaCut[0] = -INFINITY;
+  ptCut[0] = -INFINITY;
+  etaCut[1] = INFINITY;
+  ptCut[1] = INFINITY;
 }
 
 McDstCut::McDstCut(const McDstCut &copy)
