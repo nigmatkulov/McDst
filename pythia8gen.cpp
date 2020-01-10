@@ -41,6 +41,7 @@
 
 // Pythia 8 headers.
 #include "Pythia8/Pythia.h"
+#include "Pythia8/HeavyIons.h"
 
 /*
   Emit error message and exit. Args:
@@ -155,6 +156,8 @@ main(int argc, char *argv[])
   const uint32_t lz4 = 8008704; // hash4("lz4")
   // Preselection cut class.
   McDstCut cut;
+  // Heavy ion collision class.
+  Pythia8::Angantyr *hion = nullptr;
 
   // Parse command line arguments.
   if (argc <= 1)
@@ -264,6 +267,7 @@ main(int argc, char *argv[])
 
   // Setting up Pythia 8.
   pythia.init();
+  hion = (Pythia8::Angantyr *)pythia.getHeavyIonsPtr();
 
   // Setting up McDst.
   outFile = new TFile(ofile, "RECREATE");
@@ -302,7 +306,7 @@ main(int argc, char *argv[])
     TClonesArray *mcEvCol = mcArrays[McArrays::Event];
     McEvent *mcEv = new ((*mcEvCol)[mcEvCol->GetEntries()]) McEvent();
     mcEv->setEventNr(iev);
-    mcEv->setB(0.0); // Always 0 in Pythia 8 without MPI.
+    mcEv->setB(hion->hiinfo.b());
     mcEv->setPhi(0.0); // 0 in Pythia 8.
     mcEv->setNes(0);
     mcEv->setComment(0);
