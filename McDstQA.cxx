@@ -130,13 +130,6 @@ void McDstQA::run(int nev)
       int pdg = track->pdg();
       const TLorentzVector &momentum = track->momentum();
 
-      // Track cut.
-      if (cut != nullptr &&
-          !cut->isGoodParticle(momentum.Eta(), momentum.Pt(), pdg))
-      {
-        continue;
-      }
-
       // Calculate reference multiplicity and transverse sphericity.
       if (track->charge() != 0 && momentum.Pt() > 0.1)
       {
@@ -144,6 +137,7 @@ void McDstQA::run(int nev)
         {
           ++refmult10;
 
+          // Transverse sphericity calculation.
           (matrix10)(0, 0) += momentum.Px() * momentum.Px() / momentum.Pt();
           (matrix10)(1, 1) += momentum.Py() * momentum.Py() / momentum.Pt();
           (matrix10)(0, 1) += momentum.Px() * momentum.Py() / momentum.Pt();
@@ -160,6 +154,13 @@ void McDstQA::run(int nev)
       	  (matrix05)(1, 0) += momentum.Px() * momentum.Py() / momentum.Pt();
       	  pTsum05 += momentum.Pt();
         }
+      }
+
+      // Track cut.
+      if (cut != nullptr &&
+          !cut->isGoodParticle(momentum.Eta(), momentum.Pt(), pdg))
+      {
+        continue;
       }
 
       // M square vs Q*p. Px, Py, Pz.
