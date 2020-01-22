@@ -3,6 +3,13 @@
   SPDX-License-Identifier: MIT
 */
 
+/*
+  WARNING: This macro SHOULD NOT be compiled with the `cons' at BNL
+  clusters.  The `cons' will add -D__ROOT_ to the `g++' so in the case
+  of -D__ROOT__ this source file will be expanded to zero.
+*/
+#ifndef __ROOT__
+
 // getopt.
 #include <unistd.h>
 #include <getopt.h>
@@ -454,3 +461,5 @@ main(int argc, char *argv[])
   outFile->Close();
   return EXIT_SUCCESS;
 }
+
+#endif // #ifndef __ROOT__
