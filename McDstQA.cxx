@@ -160,7 +160,7 @@ void McDstQA::run(int nev)
 
       // Track cut.
       if (cut != nullptr &&
-          !cut->isGoodParticle(momentum.Eta(), momentum.Pt(), pdg))
+          !cut->isGoodParticle(momentum, pdg))
       {
         continue;
       }
