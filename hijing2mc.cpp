@@ -10,13 +10,6 @@
  * are discarded.
  */
 
-/*
-  WARNING: This macro SHOULD NOT be compiled with the `cons' at BNL
-  clusters.  The `cons' will add -D__ROOT_ to the `g++' so in the case
-  of -D__ROOT__ this source file will be expanded to zero.
-*/
-#ifndef __ROOT__
-
 // C++ headers
 #include <iostream>
 #include <fstream>
@@ -272,5 +265,3 @@ int main(int argc, char *argv[]) {
   
   return 0;
 }
-
-#endif // #ifndef __ROOT__
