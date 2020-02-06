@@ -220,16 +220,16 @@ main(int argc, char *argv[])
       xmldoc = optarg;
       break;
     case 0xFF05:
-      cut.setPtLow(std::stoi(optarg));
+      cut.setPtLow(std::stof(optarg));
       break;
     case 0xFF06:
-      cut.setPtHigh(std::stoi(optarg));
+      cut.setPtHigh(std::stof(optarg));
       break;
     case 0xFF07:
-      cut.setEtaLow(std::stoi(optarg));
+      cut.setEtaLow(std::stof(optarg));
       break;
     case 0xFF08:
-      cut.setEtaHigh(std::stoi(optarg));
+      cut.setEtaHigh(std::stof(optarg));
       break;
     case 0xFF09:
       cut.excludePdg(std::stoi(optarg));
