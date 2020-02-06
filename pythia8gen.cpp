@@ -442,7 +442,7 @@ main(int argc, char *argv[])
       float t = ev[itrk].tProd()*1e-12; // decayed particle.
 
       // Check particle cut.
-      if (!cut.isGoodParticle(v.Pt(), v.PseudoRapidity(), pdg))
+      if (!cut.isGoodParticle(v, pdg))
       {
         continue;
       }
