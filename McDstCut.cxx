@@ -60,10 +60,10 @@ void McDstCut::setPtHigh(float val)
   ptCut[1] = val;
 }
 
-bool McDstCut::isGoodParticle(float eta, float pt, int pdg)
+bool McDstCut::isGoodParticle(const TLorentzVector &v, int pdg)
 {
-  if (eta > etaCut[0] && eta < etaCut[1] &&
-      pt > ptCut[0] && pt < ptCut[1] &&
+  if (v.Eta() > etaCut[0] && v.Eta() < etaCut[1] &&
+      v.Pt() > ptCut[0] && v.Pt() < ptCut[1] &&
       checkExcludePdg(pdg) == false)
   {
     return true;

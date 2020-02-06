@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <TObject.h>
+#include <TLorentzVector.h>
 #include <math.h>
 
 class McDstCut
@@ -34,7 +35,7 @@ public:
   /*
     Check parameters of the particle.
   */
-  bool isGoodParticle(float eta, float pt, int pdg);
+  bool isGoodParticle(const TLorentzVector &v, int pdg);
 
 private:
   std::vector<int> pdgExclude;
