@@ -46,7 +46,7 @@ public:
   TH1F *hRefMult05, *hRefMult10;
   TH1F *hNTracks;
   TH1F *hSph05, *hSph10; // Transverse sphericity.
-
+  TH1F *hEta;
   /*
     Track QA histograms.
   */

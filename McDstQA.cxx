@@ -31,6 +31,8 @@ McDstQA::McDstQA(const char *input_file, const char *output_file)
                  512, -5., 5.);
   hPz = new TH1F("hPz", ";p_{z} (GeV/c);#frac{dN_{tracks}}{dp_{z}}",
                  512, -5., 5.);
+  hEta = new TH1F("hEta", ";#eta;#frac{dN_{tracks}}{d#eta}",
+                  2000, -10., 10.);
   hPdg = new TH1F("hPdg", ";pdg;#frac{dN_{tracks}}{d(pdg)}",
                   9, 0, 9.);
   TAxis *axis = hPdg->GetXaxis();
@@ -168,7 +170,7 @@ void McDstQA::run(int nev)
       hPx->Fill(momentum.Px());
       hPy->Fill(momentum.Py());
       hPz->Fill(momentum.Pz());
-
+      hEta->Fill(momentum.Eta());
       // PDG code.
       switch (pdg)
       {
