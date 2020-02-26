@@ -115,8 +115,9 @@ class McParticle : public TObject {
   { return TMath::Sqrt( px()*px() + py()*py() ); }
   Double_t phi() const      { return TMath::ATan2( py(), px() ); }
   /// Return mass according to the PDG code (GeV/c^2)
-  Double_t pdgMass() const
-  { return TDatabasePDG::Instance()->GetParticle( fPdg )->Mass(); }
+  Double_t pdgMass() const { 
+    return ( TDatabasePDG::Instance()->GetParticle( fPdg ) ) ?
+      TDatabasePDG::Instance()->GetParticle( fPdg )->Mass() : -999.; }
   /// Return mass according to the PDG code (GeV/c^2)
   Double_t PdgMass() const  { return pdgMass(); }
   /// Return mass according to the generator
@@ -124,8 +125,9 @@ class McParticle : public TObject {
   /// Return mass according to the generator
   Double_t Mass() const     { return mass(); }
   /// Return charge
-  Double_t charge() const
-  { return TDatabasePDG::Instance()->GetParticle( fPdg )->Charge(); }
+  Double_t charge() const { 
+    return ( TDatabasePDG::Instance()->GetParticle( fPdg ) ) ?
+      TDatabasePDG::Instance()->GetParticle( fPdg )->Charge() : 0; }
   /// Return energy of the particle (GeV)
   Double_t energy() const   { return (Double_t)fE; }
   /// Return energy (GeV)
