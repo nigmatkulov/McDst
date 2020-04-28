@@ -39,7 +39,7 @@ class McDst {
   /// Return pointer to the i-th particle
   static McParticle* particle(Int_t i) { return (McParticle*)mcArrays[McArrays::Particle]->UncheckedAt(i); }
   /// Return number of particles in the current events
-  static UInt_t numberOfParticles() { return mcArrays[McArrays::Particle]->GetEntries(); }
+  static UInt_t numberOfParticles() { return mcArrays[McArrays::Particle]->GetEntriesFast(); }
 
   /// Print information
   static void print();
@@ -51,6 +51,11 @@ class McDst {
  private:
   /// Array of TClonesArrays
   static TClonesArray** mcArrays;
+
+#ifdef __ROOT__
+  ClassDef(McDst, 0)
+#endif
+
 };
 
 #endif // #define McDst_h
