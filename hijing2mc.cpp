@@ -1,6 +1,6 @@
 /**
  * urqmd2mc reads UrQMD events from the ftn13 or ftn14 ascii files and
- * converts them to the UniGen format and saves on a root file.
+ * converts them to the McDst format and saves on a root file.
  *
  * ftn14 contains snapshots at given times (event steps). The event steps
  * are converted to separate events.
