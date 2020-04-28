@@ -14,22 +14,22 @@ ClassImp(McParticle);
 
 //_________________
 McParticle::McParticle() : TObject(),
-  fIndex(0), fPdg(0), fStatus(0), fParent(0), fParentDecay(0),
-  fMate(0), fDecay(0), fChild{}, fPx(0), fPy(0), fPz(0),
-  fX(0), fY(0), fZ(0), fT(0), fE(0) { // Default constructor
-  /* empty */
-}
+			   fIndex(0), fPdg(0), fStatus(0), fParent(0), fParentDecay(0),
+			   fMate(0), fDecay(0), fChild{}, fPx(0), fPy(0), fPz(0),
+			   fX(0), fY(0), fZ(0), fT(0), fE(0) { // Default constructor
+			     /* empty */
+							  }
 
 //_________________
 McParticle::McParticle( const Int_t& index, const Int_t& pdg,
-                  			const Int_t& status,
-                  			const Int_t& parent, const Int_t& parentDecay,
-                  			const Int_t& mate, const Int_t& decay,
-                  			Int_t child[2],
-                  			const Double_t& px, const Double_t& py,
-                  			const Double_t& pz, const Double_t& e,
-                  			const Double_t& x, const Double_t& y,
-                  			const Double_t& z, const Double_t& t) : TObject() {
+			const Int_t& status,
+			const Int_t& parent, const Int_t& parentDecay,
+			const Int_t& mate, const Int_t& decay,
+			Int_t child[2],
+			const Double_t& px, const Double_t& py,
+			const Double_t& pz, const Double_t& e,
+			const Double_t& x, const Double_t& y,
+			const Double_t& z, const Double_t& t) : TObject() {
   // Standard constructor
   fIndex = ( (index > std::numeric_limits<unsigned short>::max() ) ?
 	     std::numeric_limits<unsigned short>::max() : (UShort_t)index );
@@ -68,10 +68,10 @@ McParticle::McParticle( const Int_t& index, const Int_t& pdg,
 //_________________
 McParticle::McParticle( const Int_t& index, const Int_t& pdg,
                         const Int_t& status,
-              		      const Int_t& parent, const Int_t& parentDecay,
-              		      const Int_t& mate, const Int_t& decay,
+			const Int_t& parent, const Int_t& parentDecay,
+			const Int_t& mate, const Int_t& decay,
                         Int_t child[2],
-              		      const TLorentzVector& mom,
+			const TLorentzVector& mom,
                         const TLorentzVector& pos) : TObject() {
   // Standard constructor
   fIndex = ( (index > std::numeric_limits<unsigned short>::max() ) ?
@@ -251,7 +251,7 @@ void McParticle::print() const {
 	    << "First child index           : " << fChild[0] << std::endl
 	    << "Last child index            : " << fChild[1] << std::endl
 	    << "Momentum (px, py, pz) (GeV) : (" << fPx << ", " << fPy << ", " << fPz << ")" << std::endl
-      << "Energy (GeV)                : " << fE << std::endl
+	    << "Energy (GeV)                : " << fE << std::endl
 	    << "Position (x, y, z) (fm)     : (" << fX << ", " << fY << ", " << fZ << ")" << std::endl
 	    << "Creation time (fm)          : " << fT << std::endl
 	    << "------------------------------------------------" << std::endl;
@@ -272,7 +272,7 @@ void McParticle::Print( Option_t* option __attribute__((unused)) ) const {
 	    << "First child index           : " << fChild[0] << std::endl
 	    << "Last child index            : " << fChild[1] << std::endl
 	    << "Momentum (px, py, pz) (GeV) : (" << fPx << ", " << fPy << ", " << fPz << ")" << std::endl
-      << "Energy (GeV)                : " << fE << std::endl
+	    << "Energy (GeV)                : " << fE << std::endl
 	    << "Position (x, y, z) (fm)     : (" << fX << ", " << fY << ", " << fZ << ")" << std::endl
 	    << "Creation time (fm)          : " << fT << std::endl
 	    << "------------------------------------------------" << std::endl;

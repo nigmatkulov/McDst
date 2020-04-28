@@ -11,6 +11,7 @@
 
 //________________
 class McArrays {
+  
  public:
   /// Default constructor
   McArrays();

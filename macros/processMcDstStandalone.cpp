@@ -17,10 +17,6 @@
  * The first one is the program name, the second one is the name of the inputfile that 
  * maybe either the mcDst file itself, in a format dummyname.mcDst.root or a list of
  * such files called dummyname.list or dummyname.lis. The outputFile assumes the some_output_name.root.
- *
- * \author Grigory Nigmatkulov
- * \date December 15, 2019
- * \email nigmatkulov@gmail.com; ganigmatkulov@mephi.ru
  */
 
 // C++ headers

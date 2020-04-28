@@ -76,7 +76,7 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
 
   // Track
   TH1D *hPz = new TH1D("hPz","p_{z} of particle;p_{z} (GeV/c);Entries",
-                            402, -201., 201.);
+		       402, -201., 201.);
   TH2D *hPtVsEta = new TH2D("hPtVsEta",
 			    "p_{T} vs. #eta of primary track;#eta;p_{T} (GeV/c)",
                             220, -1.1, 1.1, 80, 0.05, 2.05);
@@ -98,13 +98,13 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
       eventCounter = 0;
       hundredIter++;
       std::cout << "Working on event #[" << (hundredIter * 100000)
-        	      << "/" << events2read << "]" << std::endl;
+		<< "/" << events2read << "]" << std::endl;
     }
 
     Bool_t readEvent = myReader->loadEntry(iEvent);
     if( !readEvent ) {
       std::cout << "Something went wrong, Master! Nothing to analyze..."
-								<< std::endl;
+		<< std::endl;
       break;
     }
 
@@ -156,5 +156,5 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
   myReader->Finish();
 
   std::cout << "I'm done with analysis. We'll have a Nobel Prize, Master!"
-	    			<< std::endl;
+	    << std::endl;
 }
