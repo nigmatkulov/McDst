@@ -51,10 +51,6 @@ class McDst {
  private:
   /// Array of TClonesArrays
   static TClonesArray** mcArrays;
-
-#ifdef __ROOT__
-  ClassDef(McDst, 0)
-#endif
 };
 
 #endif // #define McDst_h

@@ -1,9 +1,23 @@
 /**
- * \brief Example of how to read a file (list of files) using McDst classes
+ * \brief Example of how to read a file (list of files) using McDst class in a standalone mode
  *
- * analyseMcDst.C is an example of reading McDst format.
- * One can use either uDst file or a list of mcDst files (inFile.lis or
- * inFile.list) as an input, and preform physics analysis
+ * processMcDstStandalone.cpp is an example of reading McDst format in a standalone mode
+ * on your laptop of local computer farm.
+ * Prerequisites:
+ * - McDst directory
+ * - CERN ROOT package
+ * - g++ >= 4.8
+ * - Makefile
+ *
+ * First, the program must be compiled with the Makefile, with simple command in the bash shell:
+ * make
+ *
+ * Then the executable file processMcDstStandalone will be created. The current version of the program
+ * expects 3 arguments: ./processMcDstStandalone inputFile outputFile
+ * The first one is the program name, the second one is the name of the inputfile that 
+ * maybe either the mcDst file itself, in a format dummyname.mcDst.root or a list of
+ * such files called dummyname.list or dummyname.lis. The outputFile assumes the some_output_name.root.
+ *
  */
 
 // C++ headers
@@ -18,31 +32,45 @@
 #include "TH1.h"
 #include "TH2.h"
 #include "TMath.h"
+#include "TDatabasePDG.h"
 
 // McDst headers
-#include "../McDstReader.h"
-#include "../McDst.h"
-#include "../McEvent.h"
-#include "../McParticle.h"
-#include "../McRun.h"
+#include "McDstReader.h"
+#include "McDst.h"
+#include "McEvent.h"
+#include "McParticle.h"
+#include "McRun.h"
 
-// inFile - is a name of name.uDst.root file or a name
-//          of a name.lis(t) files that contains a list of
-//          name1.uDst.root files
 //_________________
-void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
-		  const Char_t *oFileName = "oProcTest.root") {
+int main(int argc, char* argv[]) {
+
+// #if ROOT_VERSION_CODE >= ROOT_VERSION(6,0,0)
+//   R__LOAD_LIBRARY(libEG)
+//   R__LOAD_LIBRARY(libMcDst)
+// #else
+//   gSystem->Load("libEG");
+//   gSystem->Load("libMcDst.so");
+// #endif
 
   std::cout << "Hi! Lets do some physics, Master!" << std::endl;
 
-#if ROOT_VERSION_CODE >= ROOT_VERSION(6,0,0)
-  R__LOAD_LIBRARY(../libMcDst)
-#else
-    gSystem->Load("../libMcDst.so");
-#endif
+  const char* fileName;
+  const char* oFileName;
+  
+  switch (argc) {
+  case 3:
+    fileName = argv[1];
+    oFileName = argv[2];
+    break;
+  default:
+    std::cout << "Usage: processMcDstStandalone inputFileName outputFileName.root" << std::endl;
+    return -1;
+  }
+  std::cout << " inputFileName : " << fileName << std::endl;
+  std::cout << " outputFileName: " << oFileName << std::endl;
 
-  McDstReader* myReader = new McDstReader(inFile);
-  myReader->Init();
+  McDstReader* myReader = new McDstReader(fileName);
+  myReader->Init();  
 
   // This is a way if you want to spead up IO
   std::cout << "Explicit read status for some branches" << std::endl;
@@ -62,42 +90,45 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
 
   std::cout << "Number of events to read: " << events2read << std::endl;
 
-  TFile *oFile = new TFile(oFileName, "RECREATE");
+  TFile *oFile = new TFile(oFileName, "recreate");
 
-  // Histogramming
+  /////////////////////
+  //  Histogramming  //
+  /////////////////////
+
   // Event
   TH2D *hImpactParVsNch = new TH2D("hImpactParVsNch",
 				   "Impact parameter vs. Nch;Nch;Impact parameter (fm)",
 				   300, -0.5, 599.5, 130, 0., 13.);
   TH1D *hNch = new TH1D("hNCh","Number of charged particles;Nch;Entries",
                         300, -0.5, 599.5);
-  TH1D *hSqrtSnn = new TH1D( "hSqrtSnn","Collision energy;#sqrt{s_{NN}} (GeV);Entries",
-                             100, 150., 250. );
 
   // Track
+  TH1D *hParticleCharge = new TH1D("hParticleCharge","Charge of the particle;Q;Entries",
+				   19, -9.5, 9.5);
   TH1D *hPz = new TH1D("hPz","p_{z} of particle;p_{z} (GeV/c);Entries",
-		       402, -201., 201.);
+                            402, -201., 201.);
   TH2D *hPtVsEta = new TH2D("hPtVsEta",
 			    "p_{T} vs. #eta of primary track;#eta;p_{T} (GeV/c)",
                             220, -1.1, 1.1, 80, 0.05, 2.05);
   TH1D *hPionMom = new TH1D("hPionMom","Momentum of #pi;p (GeV/c);Entries",
                             100, 0., 2.);
 
+  /////////////////////
+  //     Analysis    //
+  /////////////////////
+
   Int_t eventCounter = 0;
   Int_t hundredIter = 0;
-
-  // Run info
-  hSqrtSnn->Fill( myReader->run()->nnSqrtS() );
-  myReader->run()->print();
 
   // Loop over events
   for(Long64_t iEvent=0; iEvent<events2read; iEvent++) {
 
     eventCounter++;
-    if( eventCounter >= 100000 ) {
+    if( eventCounter >= 100 ) {
       eventCounter = 0;
       hundredIter++;
-      std::cout << "Working on event #[" << (hundredIter * 100000)
+      std::cout << "Working on event #[" << (hundredIter * 100)
 		<< "/" << events2read << "]" << std::endl;
     }
 
@@ -127,12 +158,25 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
     for(Int_t iTrk=0; iTrk<nTracks; iTrk++) {
 
       // Retrieve i-th femto track
-      McParticle *particle = dst->particle(iTrk);
+      McParticle *particle = (McParticle*)dst->particle(iTrk);
 
       if (!particle) continue;
-      //std::cout << "Track #[" << (iTrk+1) << "/" << nTracks << "]"  << std::endl;
 
+      // std::cout << "Track #[" << (iTrk+1) << "/" << nTracks << "]"  
+      // 		<< std::endl;
+
+      // std::cout << "pdgId: " << particle->pdg() 
+      // 		<< " status: " << particle->status()
+      // 		<< " px/py/pz/E/m: " 
+      // 		<< particle->px() << " / " 
+      // 		<< particle->py() << " / "
+      // 		<< particle->pz() << " / " 
+      // 		<< particle->e() << " / "
+      // 		<< particle->mass() << std::endl;
+
+      
       hPz->Fill( particle->pz() );
+      hParticleCharge->Fill( particle->charge() );
 
       if ( particle->charge() ) {
         NumOfCharged++;
@@ -152,9 +196,9 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
 
   oFile->Write();
   oFile->Close();
-
   myReader->Finish();
 
-  std::cout << "I'm done with analysis. We'll have a Nobel Prize, Master!"
-	    << std::endl;
+  std::cout << "I'm done with analysis. We'll have a Nobel Prize, Master!" << std::endl;
+
+  return 0;
 }

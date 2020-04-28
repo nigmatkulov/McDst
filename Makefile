@@ -1,3 +1,9 @@
+# In order to activate pythia8gen, which perfroms conversion
+# from the pythia8 output to McDst format, one needs to
+# have pythia8 compiled and included in the environment variables
+# in order to have Pythia/Pythia8.h and uncomment pythia8 option
+# in the converters section
+
 # Define compiler
 CXX = g++
 
@@ -45,7 +51,7 @@ converters_debug: CXXFLAGS += -O0 -g
 converters_debug: converters
 converters_optdebug: CXXFLAGS += -O2 -g
 converters_optdebug: converters
-converters: urqmd2mc pythia8
+converters: urqmd2mc  #pythia8
 urqmd2mc: urqmd2mc.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCS) $^ -o $(patsubst %.cpp,%,$<) -L. -l$(patsubst lib%.so,%,$(MCDST)) $(LIBS)
 pythia8: pythia8gen.cpp
