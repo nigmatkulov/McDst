@@ -267,7 +267,13 @@ main(int argc, char *argv[])
 
   // Setting up Pythia 8.
   pythia.init();
-  hion = (Pythia8::Angantyr *)pythia.getHeavyIonsPtr();
+  // If beams are not nuclei then do not set Agantyr
+  if (pythia.beamA.id() >= (int)1e9 && pythia.beamB.id() >= (int)1e9)
+  {
+    hion = (Pythia8::Angantyr *)pythia.getHeavyIonsPtr();
+    if (!hion)
+        ERR(1, "cannot work with Agantyr model");
+  }
 
   // Setting up McDst.
   outFile = new TFile(ofile, "RECREATE");
@@ -306,7 +312,7 @@ main(int argc, char *argv[])
     TClonesArray *mcEvCol = mcArrays[McArrays::Event];
     McEvent *mcEv = new ((*mcEvCol)[mcEvCol->GetEntries()]) McEvent();
     mcEv->setEventNr(iev);
-    mcEv->setB(hion->hiinfo.b());
+    mcEv->setB(hion ? hion->hiinfo.b() : 0.);
     mcEv->setPhi(0.0); // 0 in Pythia 8.
     mcEv->setNes(0);
     mcEv->setComment(0);
