@@ -382,10 +382,23 @@ main(int argc, char *argv[])
       */
       int mother1 = ev[itrk].mother1();
       int mother2 = ev[itrk].mother2();
+
+      /*
+         Don't nervous about goto statements.
+         We use goto here as it is actually make code easier and lighter. 
+       */
+      // Normal daughter
       if (mother1 > 0 && mother2 == 0)
+      {
         parent = mother1;
-      else
-        continue;
+        goto l_aft_mcmp;
+      }
+      // HBT case
+      if (mother1 == mother2 && status == 99)
+        goto l_aft_mcmp;
+      // In other cases go to the next iteration step
+      continue;
+l_aft_mcmp:
 
       /*
         This was taken from the same source as for mothers description:
