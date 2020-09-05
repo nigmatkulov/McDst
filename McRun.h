@@ -137,7 +137,7 @@ class McRun : public TNamed {
   /// Return center-of-mass lorentz factor
   Double_t gammaCM() const;
   /// Return center-of-mass lorentz factor
-  Double_t GetGammaCM() const         { return GetGammaCM(); }
+  Double_t GetGammaCM() const         { return gammaCM(); }
 
   //
   // Setters
