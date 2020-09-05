@@ -98,7 +98,7 @@ class McParticle : public TObject {
   /// Return px (GeV/c)
   Double_t px() const       { return (Double_t)fPx; }
   /// Return px (GeV/c)
-  Double_t Px() const       { return Px(); }
+  Double_t Px() const       { return px(); }
   /// Return py (GeV/c)
   Double_t py() const       { return (Double_t)fPy; }
   /// Return py (GeV/c)
