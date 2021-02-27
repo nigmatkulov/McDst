@@ -14,6 +14,7 @@
 // ROOT headers
 #include "TObject.h"
 #include "TLorentzVector.h"
+#include "TString.h"
 
 // Forward declarations
 class TString;
