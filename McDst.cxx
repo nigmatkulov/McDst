@@ -59,7 +59,7 @@ void McDst::printParticles() {
   std::cout << "\n Particle list contains: " << numberOfParticles() << " entries\n\n";
   // Particle loop
   for(UInt_t iPart=0; iPart<numberOfParticles(); iPart++) {
-    std::cout << "+++ particles #[" << iPart << "/" << numberOfParticles << "]\n";
+    std::cout << "+++ particles #[" << iPart << "/" << numberOfParticles() << "]\n";
     particle(iPart)->print();
   }
 
