@@ -47,17 +47,17 @@ class McRun : public TNamed {
   //
 
   /// Return generator name
-  void generator(TString& gen)       { gen = fGenerator; }
+  TString generator()                { return fGenerator; }
   /// Return generator name
-  void GetGenerator(TString& gen)    { gen = fGenerator; }
+  TString GetGenerator()             { return fGenerator; }
   /// Return comment
-  void comment(TString& cmnt)        { cmnt = fComment; }
+  TString comment()                  { return fComment; }
   /// Return comment
-  void GetComment(TString& cmnt)     { cmnt = fComment; }
+  TString GetComment()               { return fComment; }
   /// Return decayer name
-  void decayer(TString& dec)         { dec = fDecayer; }
+  TString decayer()                  { return fDecayer; }
   /// Return decayer name
-  void GetDecayer(TString& dec)      { dec = fDecayer; }
+  TString GetDecayer()               { return fDecayer; }
   /// Return number of nucleons in the projectile
   Int_t aProj() const                { return (Int_t)fAProj; }
   /// Return number of nucleons in the projectile
@@ -158,6 +158,14 @@ class McRun : public TNamed {
   void setPTarg(const Double_t& pTarg)  { fPTarg = (Float_t)pTarg; }
   /// Set momentum of the target
   void SetPTarg(const Double_t& pTarg)  { setPTarg(pTarg); }
+  /// Set generator name
+  void setGenerator(const TString& gen) { fGenerator = gen; }
+  /// Set generator name
+  void SetGenerator(const TString& gen) { setGenerator(gen); }
+  /// Set comment
+  void setComment(const TString& cmnt)  { fComment = cmnt; }
+  /// Set comment
+  void SetComment(const TString& cmnt)  { setComment(cmnt); }
   /// Set decayer type
   void setDecayer(const TString& decayer)      { fDecayer = decayer; }
   /// Set decayer type

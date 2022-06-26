@@ -138,7 +138,7 @@ int main(int argc, char* argv[]) {
       break;
     }
 
-    // Retrieve femtoDst
+    // Retrieve mcDst
     McDst *dst = myReader->mcDst();
 
     // Retrieve event information
@@ -156,7 +156,7 @@ int main(int argc, char* argv[]) {
     // Track loop
     for(Int_t iTrk=0; iTrk<nTracks; iTrk++) {
 
-      // Retrieve i-th femto track
+      // Retrieve i-th MC track
       McParticle *particle = (McParticle*)dst->particle(iTrk);
 
       if (!particle) continue;
