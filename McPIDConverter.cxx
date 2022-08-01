@@ -40,7 +40,7 @@ Int_t McPIDConverter::pdgCode(const Int_t& pid, const EConvention& pidType) {
      try to do so now; if we still cannot find the table afterwards then
      something is indeed wrong. */
   if ( mIt == fConversionTables.end() ) {
-    LoadConversionTable(pidType);
+    loadConversionTable(pidType);
     mIt = fConversionTables.find(pidType);
     if ( mIt == fConversionTables.end() ) {
       Error("GetPDGCode",
@@ -59,11 +59,6 @@ Int_t McPIDConverter::pdgCode(const Int_t& pid, const EConvention& pidType) {
   }
 
   return pidIt->second;
-}
-
-//_________________
-McPIDConverter* McPIDConverter::Instance() {
-  return (fgInstance) ? fgInstance : new McPIDConverter();
 }
 
 //_________________

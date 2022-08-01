@@ -6,20 +6,23 @@
 #ifndef McDstCut_h
 #define McDstCut_h
 
+// C++ headers
 #include <vector>
-#include <TObject.h>
-#include <TLorentzVector.h>
 #include <math.h>
 
-class McDstCut
-{
-public:
-  /*
-    By default all cuts are off, i.e. has large ranges.
-  */
+// ROOT headers
+#include <TObject.h>
+#include <TLorentzVector.h>
+
+//_________________
+class McDstCut {
+ public:
+  /// Constructor
   McDstCut();
+  /// Copy constructor
   McDstCut(const McDstCut &copy);
 
+  /// Exclude particle from analysis
   void excludePdg(int pdg);
   /*
     lo -- low edge of the range.
@@ -37,7 +40,7 @@ public:
   */
   bool isGoodParticle(const TLorentzVector &v, int pdg);
 
-private:
+ private:
   std::vector<int> pdgExclude;
   /*
     [0] -- low edge of the range.
