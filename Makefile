@@ -56,3 +56,5 @@ urqmd2mc: urqmd2mc.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCS) $^ -o $(patsubst %.cpp,%,$<) -L. -l$(patsubst lib%.so,%,$(MCDST)) $(LIBS)
 pythia8: pythia8gen.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCS) $(shell pythia8-config --cflags) $^ -o $(patsubst %.cpp,%,$<) -L. -l$(patsubst lib%.so,%,$(MCDST)) $(shell pythia8-config --libs) $(LIBS)
+oscar2013ext: oscar2013ext.cpp
+	$(CXX) $(CXXFLAGS) -I$(INCS) $^ -o $(patsubst %.cpp,%,$<) -L. -l$(patsubst lib%.so,%,$(MCDST)) $(LIBS)
