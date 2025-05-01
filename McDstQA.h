@@ -54,6 +54,7 @@ class McDstQA : public TObject {
     Track QA histograms.
   */
   TH1F *hPx, *hPy, *hPz;
+  TH1F *hX, *hY, *hZ, *hT;
   TH1F *hPdg;
   TH2F *hMSqrVsP;
 

@@ -31,6 +31,14 @@ McDstQA::McDstQA(const char *input_file, const char *output_file) {
                  512, -5., 5.);
   hPz = new TH1F("hPz", ";p_{z} (GeV/c);#frac{dN_{tracks}}{dp_{z}}",
                  512, -5., 5.);
+  hX = new TH1F("hX", ";X (fm);#frac{dN_{tracks}}{dX}",
+                 1024, -20., 20.);
+  hY = new TH1F("hY", ";Y (fm);#frac{dN_{tracks}}{dY}",
+                 1024, -20., 20.);
+  hZ = new TH1F("hZ", ";Z (fm);#frac{dN_{tracks}}{dZ}",
+                 1024, -20., 20.);
+  hT = new TH1F("hT", ";T (fm/c);#frac{dN_{tracks}}{dT}",
+                 1024, 0, 20.);
   hEta = new TH1F("hEta", ";#eta;#frac{dN_{tracks}}{d#eta}",
                   2000, -10., 10.);
   hPdg = new TH1F("hPdg", ";pdg;#frac{dN_{tracks}}{d(pdg)}",
@@ -157,6 +165,10 @@ void McDstQA::run(int nev) {
       hPx->Fill(momentum.Px());
       hPy->Fill(momentum.Py());
       hPz->Fill(momentum.Pz());
+      hX->Fill(track->x());
+      hY->Fill(track->y());
+      hZ->Fill(track->z());
+      hT->Fill(track->t());
       hEta->Fill(momentum.Eta());
       // PDG code.
       switch (pdg) {
