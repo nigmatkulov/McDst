@@ -1,10 +1,10 @@
+// McDst headers
 #include "McDstQA.h"
 
 ClassImp(McDstQA);
 
-
-McDstQA::McDstQA(const char *input_file, const char *output_file)
-{
+//_________________
+McDstQA::McDstQA(const char *input_file, const char *output_file) {
   // Open output file.
   ofile = new TFile(output_file, "RECREATE");
   assert(ofile != nullptr);
@@ -31,6 +31,14 @@ McDstQA::McDstQA(const char *input_file, const char *output_file)
                  512, -5., 5.);
   hPz = new TH1F("hPz", ";p_{z} (GeV/c);#frac{dN_{tracks}}{dp_{z}}",
                  512, -5., 5.);
+  hX = new TH1F("hX", ";X (fm);#frac{dN_{tracks}}{dX}",
+                 1024, -20., 20.);
+  hY = new TH1F("hY", ";Y (fm);#frac{dN_{tracks}}{dY}",
+                 1024, -20., 20.);
+  hZ = new TH1F("hZ", ";Z (fm);#frac{dN_{tracks}}{dZ}",
+                 1024, -20., 20.);
+  hT = new TH1F("hT", ";T (fm/c);#frac{dN_{tracks}}{dT}",
+                 1024, 0, 20.);
   hEta = new TH1F("hEta", ";#eta;#frac{dN_{tracks}}{d#eta}",
                   2000, -10., 10.);
   hPdg = new TH1F("hPdg", ";pdg;#frac{dN_{tracks}}{d(pdg)}",
@@ -56,9 +64,9 @@ McDstQA::McDstQA(const char *input_file, const char *output_file)
   assert(reader != nullptr);
   reader->Init();
 
-  reader->SetStatus("*",0);
-  reader->SetStatus("Event",1);
-  reader->SetStatus("Particle",1);
+  reader->setStatus("*",0);
+  reader->setStatus("Event",1);
+  reader->setStatus("Particle",1);
 
   // Check TChain and get number of entries.
   assert(reader->chain() != nullptr);
@@ -66,52 +74,45 @@ McDstQA::McDstQA(const char *input_file, const char *output_file)
   std::cout << "Number of events to read: " << nEvents << std::endl;
 }
 
-McDstQA::~McDstQA()
-{
+//_________________
+McDstQA::~McDstQA() {
   ofile->cd();
   ofile->Write();
   delete ofile;
   delete reader;
 }
 
-void McDstQA::setMcDstCut(McDstCut *ptr)
-{
+//_________________
+void McDstQA::setMcDstCut(McDstCut *ptr) {
   cut = ptr;
 }
 
-
-void McDstQA::run(int nev)
-{
-  if (nev < 0)
-  {
+//_________________
+void McDstQA::run(int nev) {
+  if (nev < 0) {
     nev = nEvents;
   }
-  else if (nev > nEvents)
-  {
+  else if (nev > nEvents) {
     std::cout << "Warning: nev > nEvents => nev = nEvents\n";
     nev = nEvents;
   }
 
-  for (int iev = 0; iev < nev; ++iev)
-  {
+  for (int iev = 0; iev < nev; ++iev) {
     int refmult05 = 0, refmult10 = 0;
     int nTracks = 0;
 
-    if (!reader->loadEntry(iev))
-    {
+    if (!reader->loadEntry(iev)) {
       std::cout << "mcReader->loadEntry(iEvent) == false. Skip event.\n";
       continue;
     }
 
     McDst *dst = reader->mcDst();
-    if (dst == nullptr)
-    {
+    if (dst == nullptr) {
       std::cout << "McDst == nullptr. Skip event.\n";
       continue;
     }
     McEvent *event = dst->event();
-    if (event == nullptr)
-    {
+    if (event == nullptr) {
       std::cout << "McEvent == nullptr. Skip event.\n";
       continue;
     }
@@ -126,17 +127,14 @@ void McDstQA::run(int nev)
     double pTsum05 = 0.;
     double pTsum10 = 0.;
 
-    for (int itr = 0; itr < nTracks; ++itr)
-    {
+    for (int itr = 0; itr < nTracks; ++itr) {
       McParticle *track = dst->particle(itr);
       int pdg = track->pdg();
       const TLorentzVector &momentum = track->momentum();
 
       // Calculate reference multiplicity and transverse sphericity.
-      if (track->charge() != 0 && momentum.Pt() > 0.1)
-      {
-        if (fabs(momentum.Eta()) <= 1.0)
-        {
+      if (track->charge() != 0 && momentum.Pt() > 0.1) {
+        if (fabs(momentum.Eta()) <= 1.0) {
           ++refmult10;
 
           // Transverse sphericity calculation.
@@ -146,8 +144,7 @@ void McDstQA::run(int nev)
           (matrix10)(1, 0) += momentum.Px() * momentum.Py() / momentum.Pt();
           pTsum10 += momentum.Pt();
         }
-        if (fabs(momentum.Eta()) <= 0.5)
-        {
+        if (fabs(momentum.Eta()) <= 0.5) {
           ++refmult05;
 
           (matrix05)(0, 0) += momentum.Px() * momentum.Px() / momentum.Pt();
@@ -159,9 +156,7 @@ void McDstQA::run(int nev)
       }
 
       // Track cut.
-      if (cut != nullptr &&
-          !cut->isGoodParticle(momentum, pdg))
-      {
+      if (cut != nullptr && !cut->isGoodParticle(momentum, pdg)) {
         continue;
       }
 
@@ -170,10 +165,13 @@ void McDstQA::run(int nev)
       hPx->Fill(momentum.Px());
       hPy->Fill(momentum.Py());
       hPz->Fill(momentum.Pz());
+      hX->Fill(track->x());
+      hY->Fill(track->y());
+      hZ->Fill(track->z());
+      hT->Fill(track->t());
       hEta->Fill(momentum.Eta());
       // PDG code.
-      switch (pdg)
-      {
+      switch (pdg) {
       case 211:
         hPdg->Fill("#pi^{+}", 1.);
         break;

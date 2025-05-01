@@ -47,97 +47,51 @@ class McRun : public TNamed {
   //
 
   /// Return generator name
-  TString generator()                { return fGenerator; }
-  /// Return generator name
-  TString GetGenerator()             { return fGenerator; }
+  void generator(TString& gen)       { gen = fGenerator; }
   /// Return comment
-  TString comment()                  { return fComment; }
-  /// Return comment
-  TString GetComment()               { return fComment; }
+  void comment(TString& cmnt)        { cmnt = fComment; }
   /// Return decayer name
-  TString decayer()                  { return fDecayer; }
-  /// Return decayer name
-  TString GetDecayer()               { return fDecayer; }
+  void decayer(TString& dec)         { dec = fDecayer; }
   /// Return number of nucleons in the projectile
   Int_t aProj() const                { return (Int_t)fAProj; }
-  /// Return number of nucleons in the projectile
-  Int_t GetAProj() const             { return aProj(); }
   /// Return number of protons in the projectile
   Int_t zProj() const                { return (Int_t)fZProj; }
-  /// Return number of protons in the projectile
-  Int_t GetZProj() const             { return zProj(); }
   /// Return momentum of the projectile
   Double_t pProj() const             { return (Double_t)fPProj; }
-  /// Return momentum of the projectile
-  Double_t GetPProj() const          { return pProj(); }
   /// Return number of nucleons in the target
   Int_t aTarg() const                { return (Int_t)fATarg; }
-  /// Return number of nucleons in the target
-  Int_t GetATarg() const             { return aTarg(); }
   /// Return number of protons in the target
   Int_t zTarg() const                { return (Int_t)fZTarg; }
-  /// Return number of protons in the target
-  Int_t GetZTarg() const             { return zTarg(); }
   /// Return momentum of the target
   Double_t pTarg() const             { return (Double_t)fPTarg; }
-  /// Return momentum of the target
-  Double_t GetPTarg() const          { return pTarg(); }
   /// Return minimal impact parameter requested
   Double_t bMin() const              { return (Double_t)fBMin; }
-  /// Return minimal impact parameter requested
-  Double_t GetBMin() const           { return bMin(); }
   /// Return maximal impact parameter requested
   Double_t bMax() const              { return (Double_t)fBMax; }
-  /// Return maximal impact parameter requested
-  Double_t GetBMax() const           { return bMax(); }
   /// Impact parameter weighting:
   /// \param 0 for geometrical weights (bdb)
   /// \param 1 for flat distribution
   Int_t bWeight() const              { return (fBWeight) ? 1 : 0 ; }
-  /// Impact parameter weighting:
-  /// \param 0 for geometrical weights (bdb)
-  /// \param 1 for flat distribution
-  Int_t GetBWeight() const           { return bWeight(); }
   /// Return maximal phi angle requested
   Double_t phiMax() const            { return (Double_t)fPhiMax; }
-  /// Return maximal phi angle requested
-  Double_t GetPhiMax() const         { return phiMax(); }
   /// Return minimal phi angle requested
   Double_t phiMin() const            { return (Double_t)fPhiMin; }
-  /// Return minimal phi angle requested
-  Double_t GetPhiMin() const            { return phiMin(); }
   /// Return cross section
   Double_t xSection() const          { return (Double_t)fXSection; }
-  /// Return cross section
-  Double_t GetSigma() const          { return xSection(); }
   /// Return requested number of events to generate
   UInt_t nEvents() const             { return fNEvents; }
-  /// Return requested number of events to generate
-  UInt_t GetNEvents() const          { return nEvents(); }
   /// Return center-of-mass energy
   Double_t sqrtS() const;
-  /// Return center-of-mass energy
-  Double_t GetSqrtS() const          { return sqrtS(); }
   /// Return center-of-mass energy per nucleon
   Double_t nnSqrtS() const;
-  /// Return center-of-mass energy per nucleon
-  Double_t GetNNSqrtS() const        { return nnSqrtS(); }
   /// Return energy of the projectile
   Double_t projectileEnergy() const;
-  /// Return energy of the projectile
-  Double_t GetProjectileEnergy() const { return projectileEnergy(); }
   /// Return energy of the target
   Double_t targetEnergy() const;
-  /// Return energy of the target
-  Double_t GetTargetEnergy() const    { return targetEnergy(); }
   /// Return center-of-mass velocity
   Double_t betaCM() const;
-  /// Return center-of-mass velocity
-  Double_t GetBetaCM() const          { return betaCM(); }
   /// Return center-of-mass lorentz factor
   Double_t gammaCM() const;
-  /// Return center-of-mass lorentz factor
-  Double_t GetGammaCM() const         { return GetGammaCM(); }
 
   //
   // Setters
@@ -148,28 +102,18 @@ class McRun : public TNamed {
   { if (nEvents<0) {fNEvents=0;}
     else { fNEvents = ( (nEvents > std::numeric_limits<int>::max() ) ?
 			                  std::numeric_limits<unsigned int>::max() : (UInt_t)nEvents ); } }
-  /// Set amount of event that was requested
-  void SetNEvents(const Int_t& nEvents) { setNEvents(nEvents); }
   /// Set momentum of the projectile
-  void setPProj(const Double_t& pProj)  { fPProj = (Float_t)pProj; }
-  /// Set momentum of the projectile
-  void SetPProj(const Double_t& pProj)  { setPProj(pProj); }
-  /// Set momentum of the target
-  void setPTarg(const Double_t& pTarg)  { fPTarg = (Float_t)pTarg; }
-  /// Set momentum of the target
-  void SetPTarg(const Double_t& pTarg)  { setPTarg(pTarg); }
+  void setPProj(const Double_t& pProj)    { fPProj = (Float_t)pProj; }
   /// Set generator name
   void setGenerator(const TString& gen) { fGenerator = gen; }
-  /// Set generator name
-  void SetGenerator(const TString& gen) { setGenerator(gen); }
   /// Set comment
   void setComment(const TString& cmnt)  { fComment = cmnt; }
-  /// Set comment
-  void SetComment(const TString& cmnt)  { setComment(cmnt); }
   /// Set decayer type
   void setDecayer(const TString& decayer)      { fDecayer = decayer; }
+  /// Set momentum of the target
+  void setPTarg(const Double_t& pTarg)    { fPTarg = (Float_t)pTarg; }
   /// Set decayer type
-  void SetDecayer(const TString& decayer)      { setDecayer(decayer); }
+  void setDecayer(const TString& decayer) { fDecayer = decayer; }
 
  private:
   /// Generator description
