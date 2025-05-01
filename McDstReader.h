@@ -45,9 +45,6 @@ class McDstReader : public TObject {
   McRun *run() const { return mMcRun; }
 
   /// Set enable/disable branch matching when reading uDst
-  void SetStatus(const Char_t* branchNameRegex, Int_t enable)
-  { setStatus(branchNameRegex, enable); }
-  /// Set enable/disable branch matching when reading uDst
   void setStatus(const Char_t* branchNameRegex, Int_t enable);
 
   /// Calls openRead()

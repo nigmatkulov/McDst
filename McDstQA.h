@@ -30,12 +30,15 @@
 #include "McParticle.h"
 #include "McEvent.h"
 
-class McDstQA : public TObject
-{
-public:
+//_________________
+class McDstQA : public TObject {
+ public:
+  /// Constructor
   McDstQA(const char *input_file, const char *output_file);
+  /// Destructor
   ~McDstQA();
 
+  /// Set cut
   void setMcDstCut(McDstCut *ptr);
 
   /*
@@ -55,13 +58,20 @@ public:
   TH2F *hMSqrVsP;
 
   void run(int nev = -1);
-private:
+
+ private:
+  /// Pointer to McDstReader
   McDstReader *reader;
+  /// Pointer to the output file
   TFile *ofile;
+  /// Pointer to McDstCut
   McDstCut *cut;
+  /// Number of events
   int nEvents;
 
+#ifdef __ROOT__
   ClassDef(McDstQA, 1);
+#endif
 };
 
 #endif // #ifndef MCDSTQA_H
