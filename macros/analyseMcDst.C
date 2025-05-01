@@ -108,7 +108,7 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
       break;
     }
 
-    // Retrieve femtoDst
+    // Retrieve mcDst
     McDst *dst = myReader->mcDst();
 
     // Retrieve event information
@@ -126,7 +126,7 @@ void analyseMcDst(const Char_t *inFile = "../test.mcDst.root",
     // Track loop
     for(Int_t iTrk=0; iTrk<nTracks; iTrk++) {
 
-      // Retrieve i-th femto track
+      // Retrieve i-th MC track
       McParticle *particle = dst->particle(iTrk);
 
       if (!particle) continue;

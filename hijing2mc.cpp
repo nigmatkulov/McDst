@@ -1,14 +1,7 @@
 /**
- * urqmd2mc reads UrQMD events from the ftn13 or ftn14 ascii files and
+ * hijing2mc reads HIJING events and
  * converts them to the McDst format and saves on a root file.
- *
- * ftn14 contains snapshots at given times (event steps). The event steps
- * are converted to separate events.
- *
- * ftn13 contains the final snapshot and the freeze-out coordinates.
- * The freeze-out coordinates are used. The final snapshot coordinates
- * are discarded.
- */
+*/
 
 // C++ headers
 #include <iostream>

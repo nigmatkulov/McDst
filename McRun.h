@@ -104,6 +104,12 @@ class McRun : public TNamed {
 			                  std::numeric_limits<unsigned int>::max() : (UInt_t)nEvents ); } }
   /// Set momentum of the projectile
   void setPProj(const Double_t& pProj)    { fPProj = (Float_t)pProj; }
+  /// Set generator name
+  void setGenerator(const TString& gen) { fGenerator = gen; }
+  /// Set comment
+  void setComment(const TString& cmnt)  { fComment = cmnt; }
+  /// Set decayer type
+  void setDecayer(const TString& decayer)      { fDecayer = decayer; }
   /// Set momentum of the target
   void setPTarg(const Double_t& pTarg)    { fPTarg = (Float_t)pTarg; }
   /// Set decayer type
