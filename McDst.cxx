@@ -10,10 +10,6 @@
 #include "McParticle.h"
 #include "McDst.h"       // MUST be the last one
 
-#ifdef __ROOT__
-ClassImp(McDst)
-#endif
-
 TClonesArray** McDst::mcArrays = nullptr;
 
 //_________________

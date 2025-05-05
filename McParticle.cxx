@@ -8,10 +8,6 @@
 // McDst headers
 #include "McParticle.h"
 
-#ifdef __ROOT__
-ClassImp(McParticle);
-#endif
-
 //_________________
 McParticle::McParticle() : TObject(),
 			   fIndex(0), fPdg(0), fStatus(0), fParent(0), fParentDecay(0),

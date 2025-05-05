@@ -13,10 +13,6 @@
 // McDst headers
 #include "McEvent.h"
 
-#ifdef __ROOT__
-ClassImp(McEvent);
-#endif
-
 //_________________
 McEvent::McEvent() : TObject(),
 		     fEventNr(0), fB(0), fPhi(0),

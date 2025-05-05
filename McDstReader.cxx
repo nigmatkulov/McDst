@@ -20,8 +20,6 @@
 // ROOT headers
 #include "TRegexp.h"
 
-ClassImp(McDstReader)
-
 //_________________
 McDstReader::McDstReader(const Char_t* inFileName) :
   mMcDst(new McDst()), mMcRun(nullptr), mChain(nullptr), mTree(nullptr),

@@ -11,10 +11,6 @@
 // McDst headers
 #include "McRun.h"
 
-#ifdef __ROOT__
-ClassImp(McRun);
-#endif
-
 Double_t McRun::mProtMass = 0.938272029;
 Double_t McRun::mNeutMass = 0.939565360;
 Double_t McRun::mPionMass = 0.13957018;

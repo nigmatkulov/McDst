@@ -8,10 +8,6 @@
 // C++ headers
 #include <fstream>
 
-#ifdef __ROOT__
-ClassImp(McPIDConverter);
-#endif
-
 McPIDConverter* McPIDConverter::fgInstance = nullptr;
 
 //_________________
