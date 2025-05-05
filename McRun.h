@@ -149,9 +149,7 @@ class McRun : public TNamed {
   /// Requested number of events
   UInt_t     fNEvents;
 
-#ifdef __ROOT__
   ClassDef(McRun, 1);
-#endif
 };
 
 #endif // #define McRun_h

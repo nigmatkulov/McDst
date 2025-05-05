@@ -52,7 +52,6 @@ set(HEADERS
     McArrays.h
     McDst.h
     McDstCut.h
-    # McDstQA.h
     McDstReader.h
     McEvent.h
     McParticle.h
@@ -65,7 +64,6 @@ set(SRC
     McArrays.cxx
     McDst.cxx
     McDstCut.cxx
-    # McDstQA.cxx
     McDstReader.cxx
     McEvent.cxx
     McParticle.cxx

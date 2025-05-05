@@ -3,6 +3,8 @@
 *.f13
 *.f14
 *.root
-urqmd2u
-UniGen_Dict.C
-UniGen_Dict_rdict.pcm
+*.d
+build/
+oscar2013ext
+puthia8gen
+urqmd2mc

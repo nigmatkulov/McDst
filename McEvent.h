@@ -120,9 +120,7 @@ class McEvent : public TObject {
   /// Number of binary collisions (-1: not set)
   Short_t fNcoll;
 
-#ifdef __ROOT__
   ClassDef(McEvent, 2);
-#endif
 };
 
 #endif // #define McEvent_h

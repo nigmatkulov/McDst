@@ -49,9 +49,7 @@ class McPIDConverter : public TNamed {
   /// Instance of the McPIDConverter which can be achieved at any time
   static McPIDConverter* fgInstance;
 
-#ifdef __ROOT__
   ClassDef(McPIDConverter, 0);
-#endif
   
 };
 

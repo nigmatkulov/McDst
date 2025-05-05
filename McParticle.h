@@ -240,9 +240,7 @@ class McParticle : public TObject {
   /// Energy (GeV)
   Float_t fE;
 
-#ifdef __ROOT__
   ClassDef(McParticle, 2);
-#endif
 };
 
 #endif // #define McParticle_h

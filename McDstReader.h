@@ -86,9 +86,7 @@ class McDstReader : public TObject {
   /// Status of the TClonesArray
   Char_t mStatusArrays[McArrays::NAllMcArrays];
 
-#ifdef __ROOT__
   ClassDef(McDstReader, 0)
-#endif
 };
 
 #endif // McDstReader_h
