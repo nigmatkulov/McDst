@@ -112,8 +112,6 @@ class McRun : public TNamed {
   void setDecayer(const TString& decayer)      { fDecayer = decayer; }
   /// Set momentum of the target
   void setPTarg(const Double_t& pTarg)    { fPTarg = (Float_t)pTarg; }
-  /// Set decayer type
-  void setDecayer(const TString& decayer) { fDecayer = decayer; }
 
  private:
   /// Generator description

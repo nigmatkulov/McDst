@@ -9,7 +9,7 @@ CXX = g++
 
 # Define flags
 CXXFLAGS = $(shell root-config --cflags) -fPIC -W -Woverloaded-virtual -Wno-deprecated-declarations
-CXXFLAGS += -Wall -pipe -std=c++11 -D__ROOT__ -I.
+CXXFLAGS += -Wall -pipe -std=c++17 -D__ROOT__ -I.
 LIBS = $(shell root-config --glibs) -lEG
 INCS = $(shell root-config --incdir)
 
