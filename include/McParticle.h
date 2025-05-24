@@ -26,17 +26,17 @@ class McParticle : public TObject {
   /// Default constructor
   McParticle();
   /// Constructor that takes parameters
-  McParticle(const Int_t& index, const Int_t& pdg, const Int_t& status,
-      	     const Int_t& parent, const Int_t& parentDecay,
-      	     const Int_t& mate, const Int_t& decay, Int_t child[2],
-      	     const Double_t& px, const Double_t& py, const Double_t& pz,
-             const Double_t& e,
-             const Double_t& x, const Double_t& y, const Double_t& z,
-             const Double_t& t);
+  McParticle(const int& index, const int& pdg, const int& status,
+      	     const int& parent, const int& parentDecay,
+      	     const int& mate, const int& decay, int child[2],
+      	     const double& px, const double& py, const double& pz,
+             const double& e,
+             const double& x, const double& y, const double& z,
+             const double& t);
   /// Another constructor with parameters
-  McParticle(const Int_t& index, const Int_t& pdg, const Int_t& status,
-	     const Int_t& parent, const Int_t& parentDecay,
-	     const Int_t& mate, const Int_t& decay, Int_t child[2],
+  McParticle(const int& index, const int& pdg, const int& status,
+	     const int& parent, const int& parentDecay,
+	     const int& mate, const int& decay, int child[2],
 	     const TLorentzVector& mom, const TLorentzVector& pos);
   /// Copy constructor that takes McParticle
   McParticle(const McParticle& right);
@@ -60,147 +60,153 @@ class McParticle : public TObject {
   //
 
   /// Return particle index
-  Int_t index() const       { return (Int_t)fIndex; }
+  int index() const       { return (int)fIndex; }
   /// Return PDG code
-  Int_t pdg() const         { return fPdg; }
+  int pdg() const         { return fPdg; }
   /// Return particle status
-  Int_t status() const      { return (Int_t)fStatus; }
+  int status() const      { return (int)fStatus; }
   /// Return parent index
-  Int_t parent() const      { return (Int_t)fParent; }
+  int parent() const      { return (int)fParent; }
   /// Return parent decay index
-  Int_t parentDecay() const { return (Int_t)fParentDecay; }
+  int parentDecay() const { return (int)fParentDecay; }
   /// Return index of the last collision partner
-  Int_t mate() const        { return (Int_t)fMate; }
+  int mate() const        { return (int)fMate; }
   /// Return decay index (-1 if not decayed)
-  Int_t decay() const       { return (Int_t)fDecay; }
+  int decay() const       { return (int)fDecay; }
   /// Return index of the first child
-  Int_t firstChild() const  { return (Int_t)fChild[0]; }
+  int firstChild() const  { return (int)fChild[0]; }
   /// Return index of the second child
-  Int_t lastChild() const   { return (Int_t)fChild[1]; }
+  int lastChild() const   { return (int)fChild[1]; }
   /// Return px (GeV/c)
-  Double_t px() const       { return (Double_t)fPx; }
+  double px() const       { return (double)fPx; }
   /// Return py (GeV/c)
-  Double_t py() const       { return (Double_t)fPy; }
+  double py() const       { return (double)fPy; }
   /// Return pz (GeV/c)
-  Double_t pz() const       { return (Double_t)fPz; }
+  double pz() const       { return (double)fPz; }
   /// Return p (GeV/c)
-  Double_t ptot() const
+  double ptot() const
   { return TMath::Sqrt( px()*px() + py()*py() + pz()*pz() ); }
   /// Return transverse momentum (pT)
-  Double_t pt() const
+  double pt() const
   { return TMath::Sqrt( px()*px() + py()*py() ); }
-  Double_t phi() const      { return TMath::ATan2( py(), px() ); }
+  double phi() const      { return TMath::ATan2( py(), px() ); }
   /// Return mass according to the PDG code (GeV/c^2)
-  Double_t pdgMass() const { 
+  double pdgMass() const { 
     return ( TDatabasePDG::Instance()->GetParticle( fPdg ) ) ?
       TDatabasePDG::Instance()->GetParticle( fPdg )->Mass() : -999.; }
   /// Return mass according to the generator
-  Double_t mass() const     { return momentum().M(); }
+  double mass() const     { return momentum().M(); }
   /// Return charge
-  Double_t charge() const { 
+  double charge() const { 
     return ( TDatabasePDG::Instance()->GetParticle( fPdg ) ) ?
       TDatabasePDG::Instance()->GetParticle( fPdg )->Charge() : 0; }
   /// Return energy of the particle (GeV)
-  Double_t energy() const   { return (Double_t)fE; }
+  double energy() const   { return (double)fE; }
   /// Return energy (GeV)
-  Double_t e() const        { return energy(); }
+  double e() const        { return energy(); }
   /// Calculate particle energy using PDG mass
-  Double_t pdgEnergy() const
+  double pdgEnergy() const
   { return TMath::Sqrt( ptot()*ptot() + pdgMass()*pdgMass() ); }
   /// Return energy (GeV)
-  Double_t pdgE() const     { return pdgEnergy(); }
+  double pdgE() const     { return pdgEnergy(); }
   /// Return pseudorapidity
-  Double_t eta() const      { return momentum().Eta(); }
+  double eta() const      { return momentum().Eta(); }
   /// Return pseudorapidity
-  Double_t pseudoRapidity() const { return momentum().Eta(); }
+  double pseudoRapidity() const { return momentum().Eta(); }
   /// Return four-momentum (px,py,pz,E)
   TLorentzVector momentum() const
   { return TLorentzVector( fPx, fPy, fPz, fE ); }
   /// Set four-momentum to the mom vector
   void momentum(TLorentzVector& mom) const { mom.SetPxPyPzE( fPx, fPy, fPz, fE ); }
   /// Return x position (fm)
-  Double_t x() const        { return (Double_t)fX; }
+  double x() const        { return (double)fX; }
   /// Return y position (fm)
-  Double_t y() const        { return (Double_t)fY; }
+  double y() const        { return (double)fY; }
   /// Return z position (fm)
-  Double_t z() const        { return (Double_t)fZ; }
+  double z() const        { return (double)fZ; }
   /// Return t position (fm)
-  Double_t t() const        { return (Double_t)fT; }
+  double t() const        { return (double)fT; }
   /// Return four-coordinate (x,y,z,t)
   TLorentzVector position() const
   { return TLorentzVector( fX, fY, fZ, fT ); }
   /// Set four-coordinate to the pos vector
   void position(TLorentzVector& pos) const
   { pos.SetXYZT( fX, fY, fZ, fT); }
+  /// Return space-time rapidity
+  double etaS() const
+  { return 0.5 * TMath::Log( (fT + fZ) / (fT - fZ) ); }
+  /// Return proper time (fm/c)
+  double tau() const
+  { return ( ( fT*fT > fZ*fZ) ) ? TMath::Sqrt( fT*fT - fZ * fZ ) : -0.5; }
 
   //
   // Setters
   //
 
   /// Set particle index
-  void setIndex(const Int_t& index)
+  void setIndex(const int& index)
   { fIndex = ( (index > std::numeric_limits<unsigned short>::max() ) ?
 	             std::numeric_limits<unsigned short>::max() : (UShort_t)index ); }
   /// Set PdgId (pdg code)
-  void setPdg(const Int_t& pdg)       { fPdg = pdg; }
+  void setPdg(const int& pdg)       { fPdg = pdg; }
   /// Set status
-  void setStatus(const Int_t& status)
+  void setStatus(const int& status)
   { if ( status <= std::numeric_limits<char>::min() ) { fStatus = std::numeric_limits<char>::min(); }
     else if ( status >= std::numeric_limits<char>::max() ) { fStatus = std::numeric_limits<char>::max(); }
     else { fStatus = (Char_t)status; } }
   /// Set parent index
-  void setParent(const Int_t& parent)
+  void setParent(const int& parent)
   { fParent = ( ( parent > std::numeric_limits<unsigned short>::max() ) ?
 		            std::numeric_limits<unsigned short>::max() : (UShort_t)parent ); }
   /// Set parent decay index
-  void setParentDecay(const Int_t& parentDecay)
+  void setParentDecay(const int& parentDecay)
   { fParentDecay = ( ( parentDecay > std::numeric_limits<unsigned short>::max() ) ?
 		                 std::numeric_limits<unsigned short>::max() : (UShort_t)parentDecay ); }
   /// Set index of the last collision partner
-  void setMate(const Int_t& mate)
+  void setMate(const int& mate)
   { fMate = ( (mate > std::numeric_limits<unsigned short>::max() ) ?
 	            std::numeric_limits<unsigned short>::max() : (UShort_t)mate ); }
   /// Set decay index (-1 if not decayed)
-  void setDecay(const Int_t& decay)
+  void setDecay(const int& decay)
   { fDecay = ( ( TMath::Abs(decay) > std::numeric_limits<short>::max() ) ?
 	             std::numeric_limits<short>::max() : (Short_t)decay ); }
   /// Set 2 childer indeces
-  void setChild(Int_t child[2])
+  void setChild(int child[2])
   { setFirstChild( child[0] ); setLastChild( child[1] ); }
   /// Set index of the first child
-  void setFirstChild(const Int_t& child)
+  void setFirstChild(const int& child)
   { fChild[0] = ( (child > std::numeric_limits<unsigned short>::max() ) ?
 		              std::numeric_limits<unsigned short>::max() : (UShort_t)child ); }
   /// Set index of the second child
-  void setLastChild(const Int_t& child)
+  void setLastChild(const int& child)
   { fChild[1] = ( (child > std::numeric_limits<unsigned short>::max() ) ?
 		              std::numeric_limits<unsigned short>::max() : (UShort_t)child ); }
   /// Set px (GeV/c)
-  void setPx(const Double_t& px)         { fPx = (Float_t)px; }
+  void setPx(const double& px)         { fPx = (Float_t)px; }
   /// Set py (GeV/c)
-  void setPy(const Double_t& py)         { fPy = (Float_t)py; }
+  void setPy(const double& py)         { fPy = (Float_t)py; }
   /// Set pz (GeV/c)
-  void setPz(const Double_t& pz)         { fPz = (Float_t)pz; }
+  void setPz(const double& pz)         { fPz = (Float_t)pz; }
   /// Set energy (GeV)
-  void setE(const Double_t& e)           { fE = (Float_t)e; }
+  void setE(const double& e)           { fE = (Float_t)e; }
   /// Set four-momentum (px,py,pz,E)
-  void setMomentum(const Double_t& px, const Double_t& py,
-                   const Double_t& pz, const Double_t& e)
+  void setMomentum(const double& px, const double& py,
+                   const double& pz, const double& e)
   { fPx = (Float_t)px; fPy = (Float_t)py; fPz = (Float_t)pz; fE = (Float_t)e; }
   /// Set four-momentum (TLorentzVector)
   void setMomentum(const TLorentzVector& mom)
   { fPx=(Float_t)mom.Px(); fPy=(Float_t)mom.Py(); fPz=(Float_t)mom.Pz(); fE=(Float_t)mom.E(); }
   /// Set x coordinate (fm)
-  void setX(const Double_t& x)         { fX = (Float_t)x; }
+  void setX(const double& x)         { fX = (Float_t)x; }
   /// Set y coordinate (fm)
-  void setY(const Double_t& y)         { fY = (Float_t)y; }
+  void setY(const double& y)         { fY = (Float_t)y; }
   /// Set z coordinate (fm)
-  void setZ(const Double_t& z)         { fZ = (Float_t)z; }
+  void setZ(const double& z)         { fZ = (Float_t)z; }
   /// Set t coordinate (fm/c)
-  void setT(const Double_t& t)         { fT = (Float_t)t; }
+  void setT(const double& t)         { fT = (Float_t)t; }
   /// Set four-coordinate (x,y,z,t)
-  void setPosition(const Double_t& x, const Double_t& y,
-                   const Double_t& z, const Double_t& t)
+  void setPosition(const double& x, const double& y,
+                   const double& z, const double& t)
   { fX = (Float_t)x; fY = (Float_t)y; fZ = (Float_t)z; fT = (Float_t)t; }
   /// Set four-coordinate (TLorentzVector)
   void setPosition(const TLorentzVector& pos)

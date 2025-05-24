@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
+
 project(McDst
         VERSION 1.0 
         LANGUAGES C CXX)
@@ -16,7 +17,7 @@ message(STATUS "Looking for CERN ROOT")
 #Locate the ROOT package and defines a number of variables (e.g. ROOT_INCLUDE_DIRS)
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 
-find_package(ROOT REQUIRED COMPONENTS RIO Net Physics Hist MathCore ROOTVecOps Rint Tree Core)
+find_package(ROOT REQUIRED COMPONENTS RIO Net Physics Hist MathCore ROOTVecOps Rint Tree Core EG)
 if (ROOT_FOUND)
         message(STATUS "ROOT ${ROOT_VERSION} found at ${ROOT_BINDIR}") 
         message(STATUS "ROOT include dir found at ${ROOT_INCLUDE_DIRS}")
@@ -47,38 +48,42 @@ include_directories(
 # Add same CXX flags that were used to combile and build ROOT (including CXX standard)
 add_definitions(${ROOT_CXX_FLAGS})
 
-# List all headers to be used to generate dictionary and added to the library
+# Add include directory for headers
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+# Update headers and source files to use include and src directories
 set(HEADERS
-    McArrays.h
-    McDst.h
-    McDstCut.h
-    McDstReader.h
-    McEvent.h
-    McParticle.h
-    McPIDConverter.h
-    McRun.h
+        include/McArrays.h
+        include/McDst.h
+        include/McDstCut.h
+        include/McDstReader.h
+        include/McEvent.h
+        include/McParticle.h
+        include/McPIDConverter.h
+        include/McRun.h
+        include/McUtils.h
 )
 
-# List source files
 set(SRC 
-    McArrays.cxx
-    McDst.cxx
-    McDstCut.cxx
-    McDstReader.cxx
-    McEvent.cxx
-    McParticle.cxx
-    McPIDConverter.cxx
-    McRun.cxx
+        src/McArrays.cxx
+        src/McDst.cxx
+        src/McDstCut.cxx
+        src/McDstReader.cxx
+        src/McEvent.cxx
+        src/McParticle.cxx
+        src/McPIDConverter.cxx
+        src/McRun.cxx
+        src/McUtils.cxx
 )
 
 # Generate ROOT dictionaries
 root_generate_dictionary(G__${libname} 
                          ${HEADERS}
-                         LINKDEF McDstLinkDef.h
+                         LINKDEF include/McDstLinkDef.h
 )
 
 # Generate rootmap
-root_generate_rootmap(${libname} LINKDEF McDstLinkDef.h)
+root_generate_rootmap(${libname} LINKDEF include/McDstLinkDef.h)
 
 #ROOT_LINKER_LIBRARY(${libname} ${SRC} G__${libname}.cxx)
 
@@ -87,15 +92,28 @@ add_library(${libname} SHARED ${SRC} G__${libname}.cxx)
 # Link libraries need to run the code
 target_link_libraries(${libname} ${ROOT_LIBRARIES})
 
-# install(TARGETS $(libname)
-#         LIBRARY DESTINATION "${CMAKE_BINARY_DIR}/lib" OPTIONAL)
 
-# # Create main executable (to call from the command line)
-# add_executable(dijetAna_pPb8160 dijetAna_pPb8160.cxx)
-# # Link created libraries
-# target_link_libraries(dijetAna_pPb8160 ${libname})
+# Add converter files
+# file(GLOB CONVERTER_SRC converters/*.cpp)
+file(GLOB CONVERTER_SRC converters/urqmd2mc.cpp)
 
-# Include directories 
-#target_include_directories(jetAna PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${ROOT_INCLUDE_DIRS})
+# Create an executable for each converter file
+foreach(CONVERTER_FILE ${CONVERTER_SRC})
+        get_filename_component(CONVERTER_NAME ${CONVERTER_FILE} NAME_WE)
+        add_executable(${CONVERTER_NAME} ${CONVERTER_FILE})
+        target_link_libraries(${CONVERTER_NAME} ${libname} ${ROOT_LIBRARIES})
+        target_include_directories(${CONVERTER_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/converters ${CMAKE_CURRENT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS})
+endforeach()
+
+# Add macro files
+file(GLOB MACRO_FILES macros/spectraFromMcDst.cpp)
+
+# Create an executable for each macro file
+foreach(MACRO_FILE ${MACRO_FILES})
+        get_filename_component(MACRO_NAME ${MACRO_FILE} NAME_WE)
+        add_executable(${MACRO_NAME} ${MACRO_FILE})
+        target_link_libraries(${MACRO_NAME} ${libname} ${ROOT_LIBRARIES})
+        target_include_directories(${MACRO_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/macros ${CMAKE_CURRENT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS})
+endforeach()
 
 

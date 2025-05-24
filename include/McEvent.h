@@ -41,25 +41,25 @@ class McEvent : public TObject {
   //
 
   /// Return event number
-  Int_t eventNr() const              { return fEventNr; }
+  int eventNr() const              { return fEventNr; }
   /// Return imparct parameter (fm)
-  Double_t b() const                 { return (Double_t)fB; }
+  double b() const                 { return (double)fB; }
   /// Return impact parameter (fm)
-  Double_t impact() const            { return (Double_t)fB; }
+  double impact() const            { return (double)fB; }
   /// Return reaction plane angle
-  Double_t phi() const               { return (Double_t)fPhi; }
+  double phi() const               { return (double)fPhi; }
   /// Return number of event steps
-  Int_t numberOfSteps() const        { return (Int_t)fNes; }
+  int numberOfSteps() const        { return (int)fNes; }
   /// Return time step (stamp) number
-  Int_t stepNumber() const           { return (Int_t)fStepNr; }
+  int stepNumber() const           { return (int)fStepNr; }
   /// Return time of the step (stamp)
-  Double_t stepT() const             { return (Double_t)fStepT; }
+  double stepT() const             { return (double)fStepT; }
   /// Return time of the step (stamp)
-  Double_t stepTime() const          { return stepT(); }
+  double stepTime() const          { return stepT(); }
   /// Return number of participants
-  Int_t npart() const                { return (Int_t)fNpart; }
+  int npart() const                { return (int)fNpart; }
   /// Return number of binary collisions
-  Int_t ncoll() const                { return (Int_t)fNcoll; }
+  int ncoll() const                { return (int)fNcoll; }
   /// Return comment
   void comment(TString& comment) const { comment = fComment; }
 
@@ -68,37 +68,37 @@ class McEvent : public TObject {
   //
 
   /// Set all event parameters
-  void setParameters(const Int_t& eventNr, const Double_t& b, const Double_t& phi,
-                     const Int_t& nes, const Int_t& stepNr, const Double_t& stepT,
+  void setParameters(const int& eventNr, const double& b, const double& phi,
+                     const int& nes, const int& stepNr, const double& stepT,
                      const char* comment = "");
   /// Set event number
-  void setEventNr(const Int_t& eventNr)  { fEventNr = (UInt_t)eventNr; }
+  void setEventNr(const int& eventNr)  { fEventNr = (UInt_t)eventNr; }
   /// Set impact parameter
-  void setB(const Double_t& b)           { fB = (Float_t)b; }
+  void setB(const double& b)           { fB = (Float_t)b; }
   /// Set reaction plane angle
-  void setPhi(const Double_t& phi)       { fPhi = (Float_t)phi; }
+  void setPhi(const double& phi)       { fPhi = (Float_t)phi; }
   /// Set number of steps
-  void setNumberOfSteps(const Int_t& nes)
+  void setNumberOfSteps(const int& nes)
   { fNes = ( ( nes > std::numeric_limits<unsigned short>::max() ) ?
 	     std::numeric_limits<unsigned short>::max() : (UShort_t)nes ); }
   /// Set number of steps
-  void setNes(const Int_t& nes)
+  void setNes(const int& nes)
   { fNes = ( ( nes > std::numeric_limits<unsigned short>::max() ) ?
 	     std::numeric_limits<unsigned short>::max() : (UShort_t)nes ); }
   /// Set the current step number
-  void setStepNr(const Int_t& stepNr)
+  void setStepNr(const int& stepNr)
   { fStepNr = ( ( stepNr > std::numeric_limits<unsigned short>::max() ) ?
 		std::numeric_limits<unsigned short>::max() : (UShort_t)stepNr ); }
   /// Set time of the current step
-  void setStepT(const Double_t& stepT)   { fStepT = (Float_t)stepT; }
+  void setStepT(const double& stepT)   { fStepT = (Float_t)stepT; }
   /// Set time of the current step
-  void setStepTime(const Double_t& time) { setStepT( time ); }
+  void setStepTime(const double& time) { setStepT( time ); }
   /// Set comment
   void setComment(const char* comment)   { fComment = comment; }
   /// Set number of participants
-  void setNpart(const Int_t& npart)      { fNpart = (Short_t)npart; }
+  void setNpart(const int& npart)      { fNpart = (Short_t)npart; }
   /// Set number of binary collisions
-  void setNcoll(const Int_t& ncoll)      { fNcoll = (Short_t)ncoll; }
+  void setNcoll(const int& ncoll)      { fNcoll = (Short_t)ncoll; }
 
  private:
   /// Event number
