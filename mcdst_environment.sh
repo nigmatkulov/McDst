@@ -6,7 +6,6 @@
 filnam=$BASH_SOURCE            # filename of this (sourced) macro
 absnam=`readlink -f $filnam`   # absolute filename
 pather=`dirname $absnam`       # path to the config directory
-#pather=`dirname $pather`       # path to the top unigen directory
 
 export MCDST=$pather
 
