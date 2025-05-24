@@ -19,6 +19,8 @@ SRC = $(shell find $(SRC_DIR) -name "*.cxx")
 INC_DIR := include
 # Compile all *.h classes in the directory
 HEADERS := $(shell find $(INC_DIR) -name "*.h" ! -name "*LinkDef*")
+# Define directory with converters
+CONV_DIR := converters
 
 # Define flags
 CXXFLAGS = $(shell root-config --cflags) -fPIC -W -Woverloaded-virtual -Wno-deprecated-declarations
@@ -53,19 +55,19 @@ McDst_Dict.C: $(shell find $(INC_DIR) -name "*.h" ! -name "*LinkDef*")
 .PHONY: clean distclean converters converters_debug converters_optdebug
 
 clean:
-	rm -vf *.o McDst_Dict*
+	rm -vf src/*.o McDst_Dict*
 
 distclean:
-	rm -vf *.o McDst_Dict* $(MCDST) urqmd2mc
+	rm -vf src/*.o McDst_Dict* $(MCDST) $(CONV_DIR)/urqmd2mc $(CONV_DIR)/pythia2mc $(CONV_DIR)/oscar2013ext2mc
 
 converters_debug: CXXFLAGS += -O0 -g
 converters_debug: converters
 converters_optdebug: CXXFLAGS += -O2 -g
 converters_optdebug: converters
 converters: urqmd2mc  #pythia8
-urqmd2mc: urqmd2mc.cpp
+urqmd2mc: $(CONV_DIR)/urqmd2mc.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCS) $^ -o $(patsubst %.cpp,%,$<) -L. -l$(patsubst lib%.so,%,$(MCDST)) $(LIBS)
-pythia8: pythia8gen.cpp
+pythia2mc: $(CONV_DIR)/pythia8gen.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCS) $(shell pythia8-config --cflags) $^ -o $(patsubst %.cpp,%,$<) -L. -l$(patsubst lib%.so,%,$(MCDST)) $(shell pythia8-config --libs) $(LIBS)
-oscar2013ext: oscar2013ext.cpp
+oscar2013ext2mc: $(CONV_DIR)/oscar2013ext.cpp
 	$(CXX) $(CXXFLAGS) -I$(INCS) $^ -o $(patsubst %.cpp,%,$<) -L. -l$(patsubst lib%.so,%,$(MCDST)) $(LIBS)
