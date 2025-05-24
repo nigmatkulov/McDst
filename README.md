@@ -6,20 +6,40 @@ The McDst set of classes (that can be compiled to the library) allows to store a
 Brief description of how to compile and run the analysis over mcDst on your machine.
 
 ## Installation
+You can build McDst using either CMake or the provided Makefile.
 
-a) System has to have ROOT preinstalled (should work with versions 5 and 6).
+### Using CMake
 
-b) There is a Makefile stored in the **_mcdst_** directory. In order to compile the codes one needs to run:
+1. Ensure you have CMake and ROOT installed.
+2. From the project root directory, create a build directory and run CMake:
 
-```
-make
-```
+    ```sh
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ```
 
-c) Since it is the most commonly used, the **g++** compiler is used for the compilation. However, one can also switch it to **clang++** (has been successfully tested)
+3. The shared library `libMcDst.so` will be generated in the `build` directory.
 
-d) After the compilation is finished the shared library *libMcDst.so* will be created.
+### Using Makefile
 
-e) If you have some errors during the compilation please contact the McDst maintainer.
+1. Ensure ROOT is installed and available in your environment.
+2. Navigate to the `mcdst` directory and run:
+
+    ```sh
+    make
+    ```
+
+3. The shared library `libMcDst.so` will be created in the same directory.
+
+Choose either method based on your preference or system requirements.
+
+
+
+### Troubleshooting
+
+If you have some errors during the compilation either try to fix it yourself of contact the McDst maintainer.
 
 ## Processing mcDst
 
