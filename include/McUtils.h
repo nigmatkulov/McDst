@@ -1,14 +1,11 @@
 #ifndef McUtils_h
 #define McUtils_h
 
-
 // C++ headers
 #include <cmath>
 
 // ROOT headers
 #include "TLorentzVector.h"
-
-
 
 class McUtils {
 public:
@@ -100,6 +97,36 @@ public:
      * beta: boost velocity (v/c)
      */
     static TLorentzVector boostToCMSFrame(const TLorentzVector &pLab, double beta);
+
+    /** 
+     * Center-of-mass rapidity from beam momentum
+     */
+    static double yCM_from_pBeam(const double &pBeam);
+
+    /** 
+     * Center-of-mass rapidity from beam energy
+     */
+    static double yCM_from_EBeam(const double &eBeam);
+
+    /** 
+     * Center-of-mass rapidity from kinetic energy
+     */
+    static double yCM_from_Ekin(const double &eKin);
+
+    /** 
+     * Beam rapidity from beam momentum
+     */
+    static double yBeam_from_pBeam(const double &pBeam);
+
+    /** 
+     * Beam rapidity from beam energy
+     */
+    static double yBeam_from_EBeam(const double &eBeam);
+
+    /** 
+     * Beam rapidity from kinetic energy
+     */
+    static double yBeam_from_Ekin(const double &eKin);
 };
 
 #endif // #define McUtils_h

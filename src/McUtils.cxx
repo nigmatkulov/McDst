@@ -94,3 +94,50 @@ TLorentzVector McUtils::boostToLabFrame(const TLorentzVector &pCMS, double beta)
 TLorentzVector McUtils::boostToCMSFrame(const TLorentzVector &pLab, double beta) {
     return boost_z(pLab, -beta);
 }
+
+//________________
+double McUtils::yCM_from_pBeam(const double &pBeam) {
+    // Target is at rest
+    double eBeam = sqrt(pBeam * pBeam + M_NUCLEON * M_NUCLEON);
+    double eTot = eBeam + M_NUCLEON;
+    return TMath::ATanH(pBeam / eTot);
+}
+
+//________________
+double McUtils::yCM_from_EBeam(const double &eBeam) {
+    // Target is at rest
+    double pBeam = sqrt(eBeam * eBeam - M_NUCLEON * M_NUCLEON);
+    double eTot = eBeam + M_NUCLEON;
+    return TMath::ATanH(pBeam / eTot);
+}
+
+//________________
+double McUtils::yCM_from_Ekin(const double &eKin) {
+    // Target is at rest
+    double eBeam = eKin + M_NUCLEON;
+    double pBeam = sqrt(eBeam * eBeam - M_NUCLEON * M_NUCLEON);
+    double eTot = eBeam + M_NUCLEON;
+    return TMath::ATanH(pBeam / eTot);
+}
+
+//________________
+double McUtils::yBeam_from_pBeam(const double &pBeam) {
+    // Target is at rest
+    double eBeam = sqrt(pBeam * pBeam + M_NUCLEON * M_NUCLEON);
+    return TMath::ATanH(pBeam / eBeam);
+}
+
+//________________
+double McUtils::yBeam_from_Ekin(const double &eKin) {
+    // Target is at rest
+    double eBeam = eKin + M_NUCLEON;
+    double pBeam = sqrt(eBeam * eBeam - M_NUCLEON * M_NUCLEON);
+    return TMath::ATanH(pBeam / eBeam);
+}
+
+//________________
+double McUtils::yBeam_from_EBeam(const double &eBeam) {
+    // Target is at rest
+    double pBeam = sqrt(eBeam * eBeam - M_NUCLEON * M_NUCLEON);
+    return TMath::ATanH(pBeam / eBeam);
+}

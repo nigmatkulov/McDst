@@ -168,7 +168,7 @@ void McDstReader::Init() {
     mChain->SetCacheSize(50e6);
     mChain->AddBranchToCache("*");
     mMcDst->set(mMcArrays);
-    mMcRun = (McRun*)mChain->GetFile()->Get("run");
+    // mMcRun = (McRun*)mChain->GetFile()->Get("run");
   }
 }
 

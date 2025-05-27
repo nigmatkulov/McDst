@@ -55,9 +55,11 @@ int main(int argc, char *argv[]) {
     int ATarget = 184;
     int ZTarget = 74;
     double beamEkin = 3.0;
-
+    double sNN = 3.02; // GeV
+    double y_beam = TMath::
 
     double betaCM = McUtils::beta_from_Ekin(beamEkin, ABeam, ATarget);
+    double yCM = McUtils::yCM_from_Ekin(beamEkin);
 
     // Next line is important for the spectra analysis because it
     // will be used to select |rapidity|<rapidityCut
@@ -199,7 +201,7 @@ int main(int argc, char *argv[]) {
 
         // Center of mass frame histograms
 
-        TString hAccCMSName = Form("hAcc_%zu", i);
+        TString hAccCMSName = Form("hAccCMS_%zu", i);
         TString hAccCMSTitle = Form("Acceptance in the CMS frame: %s;#eta;p_{T} (GeV/c)", particleNames[i].Data());
         hAcceptanceCMS.push_back(new TH2D(hAccCMSName, hAccCMSTitle, nEtaBins, etaMin, etaMax, nPtBins, ptMin, ptMax));
         hAcceptanceCMS.back()->Sumw2();
@@ -448,9 +450,9 @@ int main(int argc, char *argv[]) {
 
                 // Laboratory frame histograms
                 TLorentzVector pCMS = particle->momentum();
-                TLorentzVector pLab = McUtils::boostToLabFrame(pCMS, betaCM);
+                TLorentzVector pLab = McUtils::boostToLabFrame(pCMS, -betaCM); // sign shifts to positive rapidity
                 TLorentzVector rCMS = particle->position();
-                TLorentzVector rLab = McUtils::boostToLabFrame(rCMS, betaCM);
+                TLorentzVector rLab = McUtils::boostToLabFrame(rCMS, -betaCM); // sign shifts to positive rapidity
                 particle->setMomentum(pLab);
                 particle->setPosition(rLab);
 
